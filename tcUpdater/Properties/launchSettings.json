@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "tcUpdater": {
+      "commandName": "Project",
+      "commandLineArgs": "old new 1"
+    }
+  }
+}

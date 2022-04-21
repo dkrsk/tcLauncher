@@ -38,7 +38,7 @@ namespace DnKR.tcLauncher
 
             await launcher.CheckAndDownloadAsync(await launcher.GetVersionAsync(cbVersion.Text));
 
-            MessageBox.Show("Succes!");
+            MessageBox.Show("Success!");
             this.Close();
         }
 

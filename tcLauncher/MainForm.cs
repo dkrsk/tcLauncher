@@ -24,12 +24,8 @@ namespace DnKR.tcLauncher
         bool isFabricInstalled = false;
         UserProperties? properties;
 
-        UpdaterConfig updaterConfig = new(
-            gamePath.ToString(),
-            "ftp://ip/",
-            "path/",
-            new System.Net.NetworkCredential("user", "pass")
-        );
+
+        UpdaterConfig updaterConfig = config.GetUpdConfig();
 
         GameLog logForm;
         bool devOps = false;
@@ -298,6 +294,8 @@ namespace DnKR.tcLauncher
 
         private void updateThread()
         {
+            Thread.CurrentThread.IsBackground = true;
+
             lblUpdate.Invoke((MethodInvoker)delegate {
 
                 lblUpdate.Text = "Updating...";
@@ -337,13 +335,16 @@ namespace DnKR.tcLauncher
 
                     updater.ExtractFile(PackageName);
 
+                    Debug.WriteLine(Process.GetCurrentProcess().MainModule.FileName);
+
+
                     if (File.Exists(gamePath + "\\tmpUpdateLauncher"))
                     {
                         Process currentProc = Process.GetCurrentProcess();
-                        Process.Start("tcUpdater.exe", $"{gamePath}\\tmpUpdateLauncher {currentProc.MainModule.FileName} {currentProc.Id}");
+                        Process.Start($"{gamePath}\\tcUpdater.exe", $"{gamePath}\\tmpUpdateLauncher {currentProc.MainModule.FileName} {currentProc.Id} {PackageName}");
                     }
 
-                    MessageBox.Show($"Succes! Updated to build{RemoteVersion}");
+                    MessageBox.Show($"Success! Updated to build{RemoteVersion}");
                 }
 
                 lblUpdate.Invoke((MethodInvoker)delegate {
@@ -369,6 +370,8 @@ namespace DnKR.tcLauncher
 
         private void CheckUpdate()
         {
+            Thread.CurrentThread.IsBackground = true;
+
             lblUpdate.Invoke((MethodInvoker)delegate {
 
                 lblUpdate.Text = "Updating...";
@@ -409,8 +412,10 @@ namespace DnKR.tcLauncher
                 }
 
             }
-            catch (System.Net.WebException)
+            catch (System.Net.WebException e)
             {
+                Debug.WriteLine(e);
+
                 lblUpdate.Invoke((MethodInvoker)delegate {
 
                     lblUpdate.Text = "Failed to connect\nto the sever";

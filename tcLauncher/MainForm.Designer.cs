@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btnLaunch = new System.Windows.Forms.Button();
             this.groupMain = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.Pb_File = new System.Windows.Forms.ProgressBar();
             this.btnLocaleFiles = new System.Windows.Forms.Button();
             this.cbVersions = new System.Windows.Forms.ComboBox();
@@ -70,6 +71,7 @@
             this.groupMain.BackgroundImage = global::DnKR.tcLauncher.Properties.Resources.tcGroup_bg;
             resources.ApplyResources(this.groupMain, "groupMain");
             this.groupMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.groupMain.Controls.Add(this.label1);
             this.groupMain.Controls.Add(this.Pb_File);
             this.groupMain.Controls.Add(this.btnLocaleFiles);
             this.groupMain.Controls.Add(this.cbVersions);
@@ -79,6 +81,11 @@
             this.groupMain.Controls.Add(this.Pb_Progress);
             this.groupMain.Controls.Add(this.btnLaunch);
             this.groupMain.Name = "groupMain";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
             // 
             // Pb_File
             // 
@@ -275,5 +282,6 @@
         private Button btnLocaleFiles;
         private Button btnBkg;
         private Button btnBkgClear;
+        private Label label1;
     }
 }

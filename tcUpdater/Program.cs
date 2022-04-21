@@ -4,25 +4,19 @@ namespace DnKR.tcLauncher.SelfUpdate
 {
     public class tcUpdater
     {
-        //class FileNotFound : Exception
-        //{
-        //    public FileNotFound() : base()
-        //    {
-
-        //    }
-        //}
 
         static void Main(string[] arguments)
         {
             string new_filename = arguments[0];
             string old_filename = arguments[1];
             int processID = Int32.Parse(arguments[2]);
+            string package = arguments[3];
 
             try
             {
 
                 Debug.WriteLine(File.Exists(new_filename));
-                if (!File.Exists(new_filename) && !File.Exists(old_filename))
+                if (!File.Exists(new_filename) || !File.Exists(old_filename))
                 {
                     throw new FileNotFoundException();
                 }
@@ -40,6 +34,8 @@ namespace DnKR.tcLauncher.SelfUpdate
 
                 File.Delete(old_filename);
                 File.Move(new_filename, old_filename);
+
+                File.Delete(package);
 
                 Process new_process = Process.Start(old_filename);
 

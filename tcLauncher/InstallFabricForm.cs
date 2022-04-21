@@ -3,6 +3,7 @@ using CmlLib.Core.Version;
 using CmlLib.Core.Installer.FabricMC;
 
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace DnKR.tcLauncher
 {
@@ -25,12 +26,15 @@ namespace DnKR.tcLauncher
             launcher.ProgressChanged += Launcher_ProgressChanged;
             cbVersion.Items.Clear();
 
-            this.versions = await fabricLoader.GetVersionMetadatasAsync();
+            fabricLoader.LoaderVersion = "0.13.3";
 
+            this.versions = await fabricLoader.GetVersionMetadatasAsync();
+            Regex regex = new Regex(@"fabric-loader-\d\.\d\d\.\d-\d\.\d\d\.\d");
 
             foreach (var item in versions)
             {
-                cbVersion.Items.Add(item.Name);
+                if (regex.IsMatch(item.Name))
+                    cbVersion.Items.Add(item.Name);
             }
         }
 
@@ -42,7 +46,7 @@ namespace DnKR.tcLauncher
             await fabric.SaveAsync(launcher.MinecraftPath);
             
 
-            MessageBox.Show("Succes!");
+            MessageBox.Show("Success!");
             this.Close();
         }
 

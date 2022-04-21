@@ -15,7 +15,3 @@ namespace DnKR.tcLauncher
         }
     }
 }
-//Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.tclaucner",
-//                    "ftp://82.208.78.206/",
-//                    "mainUPD/",
-//                    new System.Net.NetworkCredential("almakael", "user1234")

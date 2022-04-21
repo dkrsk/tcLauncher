@@ -63,9 +63,39 @@ namespace DnKR.tcLauncher.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap clipart4666000 {
+        internal static System.Drawing.Bitmap bkgIco {
             get {
-                object obj = ResourceManager.GetObject("clipart4666000", resourceCulture);
+                object obj = ResourceManager.GetObject("bkgIco", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dirIco {
+            get {
+                object obj = ResourceManager.GetObject("dirIco", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tcGroup_bg {
+            get {
+                object obj = ResourceManager.GetObject("tcGroup-bg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tclaucher_bg {
+            get {
+                object obj = ResourceManager.GetObject("tclaucher-bg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

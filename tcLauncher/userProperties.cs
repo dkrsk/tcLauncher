@@ -11,6 +11,7 @@ namespace DnKR.tcLauncher
         public string? javaPath { get; set; }
         public string? ram { get; set; }
         public string? latestVersion { get; set; }
+        public string? bkgPath { get; set; } = null;
         public bool autoUpdate { get; set; } = false;
         public bool devOps { get; set; } = false;
 
@@ -47,6 +48,7 @@ namespace DnKR.tcLauncher
                     this.javaPath = readed.javaPath;
                     this.ram = readed.ram;
                     this.latestVersion = readed.latestVersion;
+                    this.bkgPath = readed.bkgPath;
                     this.autoUpdate = readed.autoUpdate;
                     this.devOps = readed.autoUpdate;
                 }

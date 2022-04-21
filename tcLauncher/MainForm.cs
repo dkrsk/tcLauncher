@@ -26,8 +26,8 @@ namespace DnKR.tcLauncher
 
         UpdaterConfig updaterConfig = new(
             gamePath.ToString(),
-            "ftp://ip",
-            "dir",
+            "ftp://ip/",
+            "path/",
             new System.Net.NetworkCredential("user", "pass")
         );
 
@@ -39,18 +39,22 @@ namespace DnKR.tcLauncher
 
         private async void MainForm_Shown(object sender, EventArgs e)
         {
-            gamePath = new MinecraftPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.tclaucner");
 
-            new Thread(CheckUpdate).Start();
+            
 
             properties = new();
             await properties.JsonRead();
+
+            if (properties.bkgPath != null && File.Exists(properties.bkgPath))
+                this.BackgroundImage = Image.FromFile(properties.bkgPath);
 
             this.launcher = new CMLauncher(gamePath);
             launcher.FileChanged += Launcher_FileChanged;
             launcher.ProgressChanged += Launcher_ProgressChanged;
             System.Net.ServicePointManager.DefaultConnectionLimit = 256;
             launcher.FileDownloader = new AsyncParallelDownloader();
+
+            new Thread(CheckUpdate).Start();
 
 
             await refreshVersions();
@@ -91,25 +95,31 @@ namespace DnKR.tcLauncher
 
             if (String.IsNullOrWhiteSpace(txbNicknameEnter.Text))
             {
-                MessageBox.Show("Сначала впишите ник!");
+                MessageBox.Show("Enter the nickname first!");
                 return;
             }
             this.session = MSession.GetOfflineSession(txbNicknameEnter.Text);
 
             if (cbVersions.Text == "")
             {
-                MessageBox.Show("Сначала выберете версию!");
+                MessageBox.Show("Select the version first!");
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(txbRam.Text))
+                txbRam.Text = "2048";
 
-            setUiEnabled(false);
+
+                setUiEnabled(false);
 
             try
             {
                 MLaunchOption launchOption = new MLaunchOption
                 {
+
                     MaximumRamMb = int.Parse(txbRam.Text),
+
+
                     Session = this.session,
 
                     FullScreen = false
@@ -119,7 +129,7 @@ namespace DnKR.tcLauncher
                     launchOption.JavaPath = txbJavaPath.Text;
                 else if (!string.IsNullOrWhiteSpace(txbJavaPath.Text) && txbJavaPath.Text != "Use default")
                 {
-                    MessageBox.Show("Неверное расположение java");
+                    MessageBox.Show("Incorrent location to java");
                     return;
                 }
 
@@ -204,17 +214,21 @@ namespace DnKR.tcLauncher
 
         private async void btnInstallFabric_Click(object sender, EventArgs e)
         {
-            try
-            {
-                MVersion ver = await FabricInstaller.installFabric(gamePath);
+            //try
+            //{
+            //    MVersion ver = await FabricInstaller.installFabric(gamePath);
 
-                await launcher.CheckAndDownloadAsync(ver);
-                MessageBox.Show("Успех!");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            //    await launcher.CheckAndDownloadAsync(ver);
+            //    MessageBox.Show("Успех!");
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.ToString());
+            //}
+            setUiEnabled(false);
+            Form form = new InstallFabricForm(launcher);
+            form.FormClosing += delegate { setUiEnabled(true); refreshVersions(); };
+            form.Show();
 
         }
 
@@ -228,7 +242,14 @@ namespace DnKR.tcLauncher
 
             dialog.ShowDialog();
             //javaPath = dialog.FileName;
-            txbJavaPath.Text = dialog.FileName;
+            try
+            {
+                txbJavaPath.Text = dialog.FileName;
+            }
+            catch (ArgumentException)
+            {
+
+            }
             
         }
 
@@ -279,7 +300,7 @@ namespace DnKR.tcLauncher
         {
             lblUpdate.Invoke((MethodInvoker)delegate {
 
-                lblUpdate.Text = "Обновляю...";
+                lblUpdate.Text = "Updating...";
                 setUiEnabled(false);
             });
             
@@ -322,12 +343,12 @@ namespace DnKR.tcLauncher
                         Process.Start("tcUpdater.exe", $"{gamePath}\\tmpUpdateLauncher {currentProc.MainModule.FileName} {currentProc.Id}");
                     }
 
-                    MessageBox.Show($"Успех! Обновлен до build{RemoteVersion}");
+                    MessageBox.Show($"Succes! Updated to build{RemoteVersion}");
                 }
 
                 lblUpdate.Invoke((MethodInvoker)delegate {
 
-                    lblUpdate.Text = "У вас последняя версия!";
+                    lblUpdate.Text = "You have the latest version";
                 });
 
             }
@@ -335,7 +356,7 @@ namespace DnKR.tcLauncher
             {
                 lblUpdate.Invoke((MethodInvoker)delegate {
 
-                    lblUpdate.Text = "Не удалось\nсоединиться с сервером";
+                    lblUpdate.Text = "Failed to connect\nto the sever";
                 });
             }
 
@@ -350,7 +371,7 @@ namespace DnKR.tcLauncher
         {
             lblUpdate.Invoke((MethodInvoker)delegate {
 
-                lblUpdate.Text = "Обновляю...";
+                lblUpdate.Text = "Updating...";
 
             });
 
@@ -377,13 +398,13 @@ namespace DnKR.tcLauncher
                 if (RemoteVersion > CurrentVersion)
                     lblUpdate.Invoke((MethodInvoker)delegate {
 
-                        lblUpdate.Text = "Найдена новая версия!";
+                        lblUpdate.Text = "A new version was found!";
                     });
                 else
                 {
                     lblUpdate.Invoke((MethodInvoker)delegate {
 
-                        lblUpdate.Text = "У вас последняя версия!";
+                        lblUpdate.Text = "You have the latest version";
                     });
                 }
 
@@ -392,7 +413,7 @@ namespace DnKR.tcLauncher
             {
                 lblUpdate.Invoke((MethodInvoker)delegate {
 
-                    lblUpdate.Text = "Не удалось\nсоединиться с сервером";
+                    lblUpdate.Text = "Failed to connect\nto the sever";
                 });
             }
         }
@@ -417,6 +438,34 @@ namespace DnKR.tcLauncher
         private void btnLocaleFiles_Click(object sender, EventArgs e)
         {
             Process.Start("explorer.exe",gamePath.ToString());
+        }
+
+        private void btnBkg_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.InitialDirectory = Environment.GetEnvironmentVariable("USERPROFILE"); ;
+            dialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;";
+            dialog.FilterIndex = 0;
+            dialog.Multiselect = false;
+
+            dialog.ShowDialog();
+            //javaPath = dialog.FileName;
+            try
+            {
+                this.BackgroundImage = Image.FromFile(dialog.FileName);
+                properties.bkgPath = dialog.FileName;
+            }
+            catch (ArgumentException)
+            {
+                
+            }
+
+        }
+
+        private void btnBkgClear_Click(object sender, EventArgs e)
+        {
+            this.BackgroundImage = Properties.Resources.tclaucher_bg;
+            properties.bkgPath = null;
         }
     }
 }

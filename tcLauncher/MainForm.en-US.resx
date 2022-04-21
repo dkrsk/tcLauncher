@@ -59,606 +59,204 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnLaunch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 134</value>
-  </data>
-  <data name="btnLaunch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 25</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="btnLaunch.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>15, 94</value>
   </data>
   <data name="btnLaunch.Text" xml:space="preserve">
     <value>Launch!</value>
   </data>
-  <data name="&gt;&gt;btnLaunch.Name" xml:space="preserve">
-    <value>btnLaunch</value>
-  </data>
-  <data name="&gt;&gt;btnLaunch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnLaunch.Parent" xml:space="preserve">
-    <value>groupMain</value>
-  </data>
-  <data name="&gt;&gt;btnLaunch.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="groupMain.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="Pb_File.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 210</value>
-  </data>
-  <data name="Pb_File.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 10</value>
-  </data>
-  <data name="Pb_File.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;Pb_File.Name" xml:space="preserve">
-    <value>Pb_File</value>
-  </data>
-  <data name="&gt;&gt;Pb_File.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Pb_File.Parent" xml:space="preserve">
-    <value>groupMain</value>
-  </data>
-  <data name="&gt;&gt;Pb_File.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="btnLocaleFiles.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
   <data name="btnLocaleFiles.Location" type="System.Drawing.Point, System.Drawing">
-    <value>153, 134</value>
+    <value>114, 94</value>
   </data>
   <data name="btnLocaleFiles.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 25</value>
-  </data>
-  <data name="btnLocaleFiles.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;btnLocaleFiles.Name" xml:space="preserve">
-    <value>btnLocaleFiles</value>
-  </data>
-  <data name="&gt;&gt;btnLocaleFiles.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnLocaleFiles.Parent" xml:space="preserve">
-    <value>groupMain</value>
-  </data>
-  <data name="&gt;&gt;btnLocaleFiles.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>41, 23</value>
   </data>
   <data name="cbVersions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 75</value>
+    <value>15, 43</value>
   </data>
   <data name="cbVersions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 23</value>
+    <value>140, 23</value>
   </data>
-  <data name="cbVersions.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;cbVersions.Name" xml:space="preserve">
-    <value>cbVersions</value>
-  </data>
-  <data name="&gt;&gt;cbVersions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbVersions.Parent" xml:space="preserve">
-    <value>groupMain</value>
-  </data>
-  <data name="&gt;&gt;cbVersions.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lblNickname.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblNickname.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 32</value>
+    <value>15, 17</value>
   </data>
   <data name="lblNickname.Size" type="System.Drawing.Size, System.Drawing">
     <value>34, 15</value>
   </data>
-  <data name="lblNickname.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
   <data name="lblNickname.Text" xml:space="preserve">
     <value>Nick:</value>
   </data>
-  <data name="&gt;&gt;lblNickname.Name" xml:space="preserve">
-    <value>lblNickname</value>
-  </data>
-  <data name="&gt;&gt;lblNickname.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblNickname.Parent" xml:space="preserve">
-    <value>groupMain</value>
-  </data>
-  <data name="&gt;&gt;lblNickname.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="txbNicknameEnter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>53, 29</value>
-  </data>
-  <data name="txbNicknameEnter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 23</value>
-  </data>
-  <data name="txbNicknameEnter.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;txbNicknameEnter.Name" xml:space="preserve">
-    <value>txbNicknameEnter</value>
-  </data>
-  <data name="&gt;&gt;txbNicknameEnter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txbNicknameEnter.Parent" xml:space="preserve">
-    <value>groupMain</value>
-  </data>
-  <data name="&gt;&gt;txbNicknameEnter.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>55, 14</value>
   </data>
   <data name="Lv_Status.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="Lv_Status.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 181</value>
+    <value>15, 142</value>
   </data>
   <data name="Lv_Status.Size" type="System.Drawing.Size, System.Drawing">
     <value>39, 15</value>
   </data>
-  <data name="Lv_Status.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
   <data name="Lv_Status.Text" xml:space="preserve">
     <value>Ready</value>
   </data>
-  <data name="&gt;&gt;Lv_Status.Name" xml:space="preserve">
-    <value>Lv_Status</value>
+  <data name="Pb_File.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;Lv_Status.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Pb_File.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 160</value>
   </data>
-  <data name="&gt;&gt;Lv_Status.Parent" xml:space="preserve">
-    <value>groupMain</value>
+  <data name="Pb_File.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 10</value>
   </data>
-  <data name="&gt;&gt;Lv_Status.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="Pb_Progress.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="Pb_Progress.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 210</value>
+    <value>15, 160</value>
   </data>
   <data name="Pb_Progress.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 23</value>
-  </data>
-  <data name="Pb_Progress.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;Pb_Progress.Name" xml:space="preserve">
-    <value>Pb_Progress</value>
-  </data>
-  <data name="&gt;&gt;Pb_Progress.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Pb_Progress.Parent" xml:space="preserve">
-    <value>groupMain</value>
-  </data>
-  <data name="&gt;&gt;Pb_Progress.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>140, 23</value>
   </data>
   <data name="groupMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 84</value>
+    <value>146, 104</value>
   </data>
   <data name="groupMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 254</value>
-  </data>
-  <data name="groupMain.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;groupMain.Name" xml:space="preserve">
-    <value>groupMain</value>
-  </data>
-  <data name="&gt;&gt;groupMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupMain.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>168, 200</value>
   </data>
   <data name="lblUpdate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblUpdate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 339</value>
+    <value>8, 322</value>
   </data>
   <data name="lblUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 15</value>
-  </data>
-  <data name="lblUpdate.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>62, 15</value>
   </data>
   <data name="lblUpdate.Text" xml:space="preserve">
-    <value>Updating...</value>
-  </data>
-  <data name="&gt;&gt;lblUpdate.Name" xml:space="preserve">
-    <value>lblUpdate</value>
-  </data>
-  <data name="&gt;&gt;lblUpdate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblUpdate.Parent" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;lblUpdate.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>Updating..</value>
   </data>
   <data name="lblRam.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblRam.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 146</value>
+    <value>8, 159</value>
   </data>
   <data name="lblRam.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 15</value>
   </data>
-  <data name="lblRam.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
   <data name="lblRam.Text" xml:space="preserve">
     <value>RAM (mb):</value>
   </data>
-  <data name="&gt;&gt;lblRam.Name" xml:space="preserve">
-    <value>lblRam</value>
-  </data>
-  <data name="&gt;&gt;lblRam.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblRam.Parent" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;lblRam.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="btnJavaChange.Location" type="System.Drawing.Point, System.Drawing">
-    <value>203, 50</value>
-  </data>
-  <data name="btnJavaChange.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 23</value>
-  </data>
-  <data name="btnJavaChange.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>197, 39</value>
   </data>
   <data name="btnJavaChange.Text" xml:space="preserve">
     <value>Change</value>
-  </data>
-  <data name="&gt;&gt;btnJavaChange.Name" xml:space="preserve">
-    <value>btnJavaChange</value>
-  </data>
-  <data name="&gt;&gt;btnJavaChange.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnJavaChange.Parent" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;btnJavaChange.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="lblJavaText.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblJavaText.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 24</value>
+    <value>8, 13</value>
   </data>
   <data name="lblJavaText.Size" type="System.Drawing.Size, System.Drawing">
     <value>59, 15</value>
   </data>
-  <data name="lblJavaText.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
   <data name="lblJavaText.Text" xml:space="preserve">
     <value>Java Path:</value>
   </data>
-  <data name="&gt;&gt;lblJavaText.Name" xml:space="preserve">
-    <value>lblJavaText</value>
+  <data name="txbJavaPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>88, 10</value>
   </data>
-  <data name="&gt;&gt;lblJavaText.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="txbJavaPath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 23</value>
   </data>
-  <data name="&gt;&gt;lblJavaText.Parent" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;lblJavaText.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="txbJavaPath.Text" xml:space="preserve">
+    <value>Use default</value>
   </data>
   <data name="txbRam.Location" type="System.Drawing.Point, System.Drawing">
-    <value>143, 138</value>
+    <value>129, 151</value>
   </data>
   <data name="txbRam.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 23</value>
-  </data>
-  <data name="txbRam.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>143, 23</value>
   </data>
   <data name="txbRam.Text" xml:space="preserve">
     <value>2048</value>
-  </data>
-  <data name="&gt;&gt;txbRam.Name" xml:space="preserve">
-    <value>txbRam</value>
-  </data>
-  <data name="&gt;&gt;txbRam.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txbRam.Parent" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;txbRam.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="lblJavaArg.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblJavaArg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 92</value>
+    <value>8, 100</value>
   </data>
   <data name="lblJavaArg.Size" type="System.Drawing.Size, System.Drawing">
     <value>59, 15</value>
   </data>
-  <data name="lblJavaArg.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
   <data name="lblJavaArg.Text" xml:space="preserve">
     <value>Java Args:</value>
   </data>
-  <data name="&gt;&gt;lblJavaArg.Name" xml:space="preserve">
-    <value>lblJavaArg</value>
-  </data>
-  <data name="&gt;&gt;lblJavaArg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblJavaArg.Parent" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;lblJavaArg.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="btnUpdatePack.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 368</value>
+    <value>8, 340</value>
   </data>
   <data name="btnUpdatePack.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 23</value>
-  </data>
-  <data name="btnUpdatePack.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>107, 23</value>
   </data>
   <data name="btnUpdatePack.Text" xml:space="preserve">
     <value>Update modpack</value>
   </data>
-  <data name="&gt;&gt;btnUpdatePack.Name" xml:space="preserve">
-    <value>btnUpdatePack</value>
-  </data>
-  <data name="&gt;&gt;btnUpdatePack.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnUpdatePack.Parent" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;btnUpdatePack.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="chbAutoUpdate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="chbAutoUpdate.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="chbAutoUpdate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 314</value>
+    <value>8, 369</value>
   </data>
   <data name="chbAutoUpdate.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 19</value>
   </data>
-  <data name="chbAutoUpdate.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="chbAutoUpdate.Text" xml:space="preserve">
     <value>AutoUpdate</value>
   </data>
-  <data name="chbAutoUpdate.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;chbAutoUpdate.Name" xml:space="preserve">
-    <value>chbAutoUpdate</value>
-  </data>
-  <data name="&gt;&gt;chbAutoUpdate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chbAutoUpdate.Parent" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;chbAutoUpdate.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="txbJavaArg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>79, 89</value>
+    <value>129, 92</value>
   </data>
   <data name="txbJavaArg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 23</value>
-  </data>
-  <data name="txbJavaArg.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;txbJavaArg.Name" xml:space="preserve">
-    <value>txbJavaArg</value>
-  </data>
-  <data name="&gt;&gt;txbJavaArg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txbJavaArg.Parent" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;txbJavaArg.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>143, 23</value>
   </data>
   <data name="btnInstallVanilla.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 368</value>
+    <value>186, 369</value>
   </data>
   <data name="btnInstallVanilla.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
-  </data>
-  <data name="btnInstallVanilla.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>86, 23</value>
   </data>
   <data name="btnInstallVanilla.Text" xml:space="preserve">
     <value>Install Vanilla</value>
   </data>
-  <data name="&gt;&gt;btnInstallVanilla.Name" xml:space="preserve">
-    <value>btnInstallVanilla</value>
-  </data>
-  <data name="&gt;&gt;btnInstallVanilla.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnInstallVanilla.Parent" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;btnInstallVanilla.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <data name="btnInstallFabric.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 339</value>
+    <value>183, 340</value>
   </data>
   <data name="btnInstallFabric.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
-  </data>
-  <data name="btnInstallFabric.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>89, 23</value>
   </data>
   <data name="btnInstallFabric.Text" xml:space="preserve">
     <value>Install Fabric</value>
   </data>
-  <data name="&gt;&gt;btnInstallFabric.Name" xml:space="preserve">
-    <value>btnInstallFabric</value>
-  </data>
-  <data name="&gt;&gt;btnInstallFabric.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnInstallFabric.Parent" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;btnInstallFabric.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="txbJavaPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>79, 21</value>
-  </data>
-  <data name="txbJavaPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 23</value>
-  </data>
-  <data name="txbJavaPath.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;txbJavaPath.Name" xml:space="preserve">
-    <value>txbJavaPath</value>
-  </data>
-  <data name="&gt;&gt;txbJavaPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txbJavaPath.Parent" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;txbJavaPath.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="groupSettings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>380, 21</value>
+    <value>451, 12</value>
   </data>
   <data name="groupSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>300, 401</value>
-  </data>
-  <data name="groupSettings.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;groupSettings.Name" xml:space="preserve">
-    <value>groupSettings</value>
-  </data>
-  <data name="&gt;&gt;groupSettings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupSettings.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupSettings.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="btnBkg.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="btnBkg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 401</value>
-  </data>
-  <data name="btnBkg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 28</value>
-  </data>
-  <data name="btnBkg.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;btnBkg.Name" xml:space="preserve">
-    <value>btnBkg</value>
-  </data>
-  <data name="&gt;&gt;btnBkg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnBkg.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnBkg.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="btnBkgClear.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="btnBkgClear.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="btnBkgClear.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Black, 9pt, style=Bold</value>
-  </data>
-  <data name="btnBkgClear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>41, 405</value>
-  </data>
-  <data name="btnBkgClear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>12, 20</value>
-  </data>
-  <data name="btnBkgClear.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="btnBkgClear.Text" xml:space="preserve">
-    <value>X</value>
-  </data>
-  <data name="&gt;&gt;btnBkgClear.Name" xml:space="preserve">
-    <value>btnBkgClear</value>
-  </data>
-  <data name="&gt;&gt;btnBkgClear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnBkgClear.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnBkgClear.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>7, 15</value>
+    <value>283, 398</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>704, 441</value>
+    <value>743, 422</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1794,11 +1392,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>tcLauncher</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>MainForm</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

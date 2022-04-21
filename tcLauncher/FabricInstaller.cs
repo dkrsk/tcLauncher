@@ -28,6 +28,8 @@ namespace DnKR
 
             public static async Task<MVersion> installFabric(MinecraftPath path)
             {
+
+
                 var fabricLoader = new FabricVersionLoader();
                 //FabricLoader fabricVersion = fabricLoader.GetFabricLoaders()[0];
                 var fabric = fabricLoader.GetVersionMetadatas();

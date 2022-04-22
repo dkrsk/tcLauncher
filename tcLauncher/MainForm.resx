@@ -87,6 +87,123 @@
   <data name="groupMain.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>groupMain</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;Pb_File.Name" xml:space="preserve">
+    <value>Pb_File</value>
+  </data>
+  <data name="&gt;&gt;Pb_File.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Pb_File.Parent" xml:space="preserve">
+    <value>groupMain</value>
+  </data>
+  <data name="&gt;&gt;Pb_File.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;btnLocaleFiles.Name" xml:space="preserve">
+    <value>btnLocaleFiles</value>
+  </data>
+  <data name="&gt;&gt;btnLocaleFiles.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnLocaleFiles.Parent" xml:space="preserve">
+    <value>groupMain</value>
+  </data>
+  <data name="&gt;&gt;btnLocaleFiles.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;cbVersions.Name" xml:space="preserve">
+    <value>cbVersions</value>
+  </data>
+  <data name="&gt;&gt;cbVersions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbVersions.Parent" xml:space="preserve">
+    <value>groupMain</value>
+  </data>
+  <data name="&gt;&gt;cbVersions.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;lblNickname.Name" xml:space="preserve">
+    <value>lblNickname</value>
+  </data>
+  <data name="&gt;&gt;lblNickname.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblNickname.Parent" xml:space="preserve">
+    <value>groupMain</value>
+  </data>
+  <data name="&gt;&gt;lblNickname.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;txbNicknameEnter.Name" xml:space="preserve">
+    <value>txbNicknameEnter</value>
+  </data>
+  <data name="&gt;&gt;txbNicknameEnter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txbNicknameEnter.Parent" xml:space="preserve">
+    <value>groupMain</value>
+  </data>
+  <data name="&gt;&gt;txbNicknameEnter.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;Lv_Status.Name" xml:space="preserve">
+    <value>Lv_Status</value>
+  </data>
+  <data name="&gt;&gt;Lv_Status.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Lv_Status.Parent" xml:space="preserve">
+    <value>groupMain</value>
+  </data>
+  <data name="&gt;&gt;Lv_Status.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;Pb_Progress.Name" xml:space="preserve">
+    <value>Pb_Progress</value>
+  </data>
+  <data name="&gt;&gt;Pb_Progress.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Pb_Progress.Parent" xml:space="preserve">
+    <value>groupMain</value>
+  </data>
+  <data name="&gt;&gt;Pb_Progress.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="groupMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>124, 84</value>
+  </data>
+  <data name="groupMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 254</value>
+  </data>
+  <data name="groupMain.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;groupMain.Name" xml:space="preserve">
+    <value>groupMain</value>
+  </data>
+  <data name="&gt;&gt;groupMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupMain.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -276,26 +393,32 @@
   <data name="&gt;&gt;Pb_Progress.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="groupMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>124, 84</value>
+  <data name="btnInstallQuilt.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="groupMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 254</value>
+  <data name="btnInstallQuilt.Location" type="System.Drawing.Point, System.Drawing">
+    <value>187, 310</value>
   </data>
-  <data name="groupMain.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="btnInstallQuilt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 23</value>
   </data>
-  <data name="&gt;&gt;groupMain.Name" xml:space="preserve">
-    <value>groupMain</value>
+  <data name="btnInstallQuilt.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
   </data>
-  <data name="&gt;&gt;groupMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="btnInstallQuilt.Text" xml:space="preserve">
+    <value>Install Quilt</value>
   </data>
-  <data name="&gt;&gt;groupMain.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;btnInstallQuilt.Name" xml:space="preserve">
+    <value>btnInstallQuilt</value>
   </data>
-  <data name="&gt;&gt;groupMain.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;btnInstallQuilt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnInstallQuilt.Parent" xml:space="preserve">
+    <value>groupSettings</value>
+  </data>
+  <data name="&gt;&gt;btnInstallQuilt.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="lblUpdate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -322,7 +445,7 @@
     <value>groupSettings</value>
   </data>
   <data name="&gt;&gt;lblUpdate.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="lblRam.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -349,7 +472,7 @@
     <value>groupSettings</value>
   </data>
   <data name="&gt;&gt;lblRam.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="btnJavaChange.Location" type="System.Drawing.Point, System.Drawing">
     <value>203, 50</value>
@@ -373,7 +496,7 @@
     <value>groupSettings</value>
   </data>
   <data name="&gt;&gt;btnJavaChange.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="lblJavaText.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -400,7 +523,7 @@
     <value>groupSettings</value>
   </data>
   <data name="&gt;&gt;lblJavaText.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="txbRam.Location" type="System.Drawing.Point, System.Drawing">
     <value>143, 138</value>
@@ -424,7 +547,7 @@
     <value>groupSettings</value>
   </data>
   <data name="&gt;&gt;txbRam.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="lblJavaArg.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -451,7 +574,7 @@
     <value>groupSettings</value>
   </data>
   <data name="&gt;&gt;lblJavaArg.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="btnUpdatePack.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 368</value>
@@ -475,7 +598,7 @@
     <value>groupSettings</value>
   </data>
   <data name="&gt;&gt;btnUpdatePack.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="chbAutoUpdate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -484,7 +607,7 @@
     <value>False</value>
   </data>
   <data name="chbAutoUpdate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 314</value>
+    <value>14, 277</value>
   </data>
   <data name="chbAutoUpdate.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 19</value>
@@ -508,7 +631,7 @@
     <value>groupSettings</value>
   </data>
   <data name="&gt;&gt;chbAutoUpdate.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="txbJavaArg.Location" type="System.Drawing.Point, System.Drawing">
     <value>79, 89</value>
@@ -529,7 +652,7 @@
     <value>groupSettings</value>
   </data>
   <data name="&gt;&gt;txbJavaArg.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="btnInstallVanilla.Location" type="System.Drawing.Point, System.Drawing">
     <value>187, 368</value>
@@ -553,7 +676,7 @@
     <value>groupSettings</value>
   </data>
   <data name="&gt;&gt;btnInstallVanilla.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="btnInstallFabric.Location" type="System.Drawing.Point, System.Drawing">
     <value>187, 339</value>
@@ -577,7 +700,7 @@
     <value>groupSettings</value>
   </data>
   <data name="&gt;&gt;btnInstallFabric.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="txbJavaPath.Location" type="System.Drawing.Point, System.Drawing">
     <value>79, 21</value>
@@ -598,7 +721,7 @@
     <value>groupSettings</value>
   </data>
   <data name="&gt;&gt;txbJavaPath.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="groupSettings.Location" type="System.Drawing.Point, System.Drawing">
     <value>380, 21</value>

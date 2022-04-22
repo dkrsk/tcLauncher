@@ -54,6 +54,7 @@
             this.txbJavaPath = new System.Windows.Forms.TextBox();
             this.btnBkg = new System.Windows.Forms.Button();
             this.btnBkgClear = new System.Windows.Forms.Button();
+            this.btnInstallQuilt = new System.Windows.Forms.Button();
             this.groupMain.SuspendLayout();
             this.groupSettings.SuspendLayout();
             this.SuspendLayout();
@@ -131,6 +132,7 @@
             this.groupSettings.BackColor = System.Drawing.Color.Transparent;
             this.groupSettings.BackgroundImage = global::DnKR.tcLauncher.Properties.Resources.tcGroup_bg;
             this.groupSettings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.groupSettings.Controls.Add(this.btnInstallQuilt);
             this.groupSettings.Controls.Add(this.lblUpdate);
             this.groupSettings.Controls.Add(this.lblRam);
             this.groupSettings.Controls.Add(this.btnJavaChange);
@@ -234,6 +236,13 @@
             this.btnBkgClear.UseVisualStyleBackColor = false;
             this.btnBkgClear.Click += new System.EventHandler(this.btnBkgClear_Click);
             // 
+            // btnInstallQuilt
+            // 
+            resources.ApplyResources(this.btnInstallQuilt, "btnInstallQuilt");
+            this.btnInstallQuilt.Name = "btnInstallQuilt";
+            this.btnInstallQuilt.UseVisualStyleBackColor = true;
+            this.btnInstallQuilt.Click += new System.EventHandler(this.btnInstallQuilt_Click);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -283,5 +292,6 @@
         private Button btnBkg;
         private Button btnBkgClear;
         private Label label1;
+        private Button btnInstallQuilt;
     }
 }

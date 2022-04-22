@@ -208,24 +208,30 @@ namespace DnKR.tcLauncher
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
 
-        private async void btnInstallFabric_Click(object sender, EventArgs e)
+        private void btnInstallVanilla_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    MVersion ver = await FabricInstaller.installFabric(gamePath);
-
-            //    await launcher.CheckAndDownloadAsync(ver);
-            //    MessageBox.Show("Успех!");
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.ToString());
-            //}
             setUiEnabled(false);
-            Form form = new InstallFabricForm(launcher);
+            Form form = new InstallVanillaForm(launcher);
             form.FormClosing += delegate { setUiEnabled(true); refreshVersions(); };
             form.Show();
 
+        }
+
+        private async void btnInstallFabric_Click(object sender, EventArgs e)
+        {
+            setUiEnabled(false);
+            InstallFabricForm form = new(launcher);
+            form.FormClosing += delegate { setUiEnabled(true); refreshVersions(); };
+            form.Show();
+
+        }
+
+        private void btnInstallQuilt_Click(object sender, EventArgs e)
+        {
+            setUiEnabled(false);
+            InstallQuiltForm form = new(launcher);
+            form.FormClosing += delegate { setUiEnabled(true); refreshVersions(); };
+            form.Show();
         }
 
         private void btnJavaChange_Click(object sender, EventArgs e)
@@ -269,15 +275,6 @@ namespace DnKR.tcLauncher
             Pb_File.Maximum = e.TotalFileCount;
             Pb_File.Value = e.ProgressedFileCount;
             Lv_Status.Text = $"{e.FileKind} : {e.FileName} ({e.ProgressedFileCount}/{e.TotalFileCount})";
-        }
-
-        private void btnInstallVanilla_Click(object sender, EventArgs e)
-        {
-            setUiEnabled(false);
-            Form form = new InstallVanillaForm(launcher);
-            form.FormClosing += delegate { setUiEnabled(true); refreshVersions(); };
-            form.Show();
-
         }
 
         private void btnUpdatePack_Click(object? sender, EventArgs? e)
@@ -472,6 +469,8 @@ namespace DnKR.tcLauncher
             this.BackgroundImage = Properties.Resources.tclaucher_bg;
             properties.bkgPath = null;
         }
+
+
     }
 }
 

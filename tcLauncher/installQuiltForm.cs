@@ -1,19 +1,19 @@
 ﻿using CmlLib.Core;
 using CmlLib.Core.Version;
-using CmlLib.Core.Installer.FabricMC;
+using CmlLib.Core.Installer.QuiltMC;
 
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 
 namespace DnKR.tcLauncher
 {
-    public partial class InstallFabricForm : Form
+    public partial class InstallQuiltForm : Form
     {
         CMLauncher launcher;
-        FabricVersionLoader fabricLoader = new FabricVersionLoader();
+        QuiltVersionLoader quiltLoader = new QuiltVersionLoader();
         MVersionCollection versions;
 
-        public InstallFabricForm(CMLauncher launcher)
+        public InstallQuiltForm(CMLauncher launcher)
         {
             this.launcher = launcher;
 
@@ -26,9 +26,9 @@ namespace DnKR.tcLauncher
             launcher.ProgressChanged += Launcher_ProgressChanged;
             cbVersion.Items.Clear();
 
-            fabricLoader.LoaderVersion = "0.13.3";
-
-            this.versions = await fabricLoader.GetVersionMetadatasAsync();
+            //quiltLoader.LoaderVersion = "0.13.3";
+            //0.16.0-beta.8
+            this.versions = await quiltLoader.GetVersionMetadatasAsync();
             Regex regex = new Regex(@"\d\.\d\d\.\d$");
 
             foreach (var item in versions)
@@ -42,9 +42,9 @@ namespace DnKR.tcLauncher
         {
             btnInstall.Enabled = false;
 
-            var fabric = versions.GetVersionMetadata(cbVersion.Text);
-            await fabric.SaveAsync(launcher.MinecraftPath);
-            
+            var quilt = versions.GetVersionMetadata(cbVersion.Text);
+            await quilt.SaveAsync(launcher.MinecraftPath);
+
 
             MessageBox.Show("Success!");
             this.Close();

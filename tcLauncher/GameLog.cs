@@ -4,6 +4,7 @@ namespace DnKR.tcLauncher
 {
     public partial class GameLog : Form
     {
+
         public GameLog()
         {
             InitializeComponent();
@@ -24,6 +25,16 @@ namespace DnKR.tcLauncher
                 rtbLog.AppendText(msg + "\n");
                 rtbLog.ScrollToCaret();
             }
+        }
+
+        private async void GameLog_Shown(object sender, EventArgs e)
+        {
+            string msg;
+            while (logQueue.TryDequeue(out msg))
+            {
+                await File.WriteAllTextAsync(MainForm.gamePath.ToString() + "\\logs.txt", msg + '\n');
+            }
+            
         }
     }
 }

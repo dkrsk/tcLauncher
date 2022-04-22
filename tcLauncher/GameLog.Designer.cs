@@ -45,7 +45,6 @@
             // 
             // timerLog
             // 
-            this.timerLog.Enabled = true;
             this.timerLog.Interval = 6000;
             this.timerLog.Tick += new System.EventHandler(this.timerLog_Tick);
             // 
@@ -61,6 +60,7 @@
             this.Name = "GameLog";
             this.ShowIcon = false;
             this.Text = "GameLog";
+            this.Shown += new System.EventHandler(this.GameLog_Shown);
             this.ResumeLayout(false);
 
         }

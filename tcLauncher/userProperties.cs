@@ -7,9 +7,9 @@ namespace DnKR.tcLauncher
     internal class UserProperties
     {
         public string? nickname { get; set; }
-        public string? javaArgs { get; set; }
+        public string? javaArgs { get; set; } = "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1";
         public string? javaPath { get; set; }
-        public string? ram { get; set; }
+        public string? ram { get; set; } = "2048";
         public string? latestVersion { get; set; }
         public string? bkgPath { get; set; } = null;
         public bool autoUpdate { get; set; } = false;
@@ -27,7 +27,6 @@ namespace DnKR.tcLauncher
         {
             using (FileStream fs = new FileStream(path + fileName, FileMode.Create))
             {
-                Debug.WriteLine(this.nickname);
                 await JsonSerializer.SerializeAsync(fs, this);
             }
         }

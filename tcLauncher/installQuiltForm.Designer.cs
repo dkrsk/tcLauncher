@@ -68,7 +68,7 @@
             this.pb_Progress.Size = new System.Drawing.Size(201, 10);
             this.pb_Progress.TabIndex = 3;
             // 
-            // InstallFabricForm
+            // InstallQuiltForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -79,7 +79,8 @@
             this.Controls.Add(this.lblVersion);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.Name = "InstallFabricForm";
+            this.Name = "InstallQuiltForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Install Fabric version";
             this.Shown += new System.EventHandler(this.InstallFabricForm_Shown);
             this.ResumeLayout(false);

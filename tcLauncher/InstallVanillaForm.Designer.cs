@@ -82,6 +82,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "InstallVanillaForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Install vanilla version";
             this.Shown += new System.EventHandler(this.InstallVanillaForm_Shown);
             this.ResumeLayout(false);

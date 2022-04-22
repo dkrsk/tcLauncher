@@ -1,12 +1,12 @@
 ﻿using CmlLib.Core;
 using CmlLib.Core.Auth;
 using CmlLib.Core.Downloader;
-using CmlLib.Core.Version;
 
 using DnKR.mineUpdater;
 
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Collections.Concurrent;
 
 
 namespace DnKR.tcLauncher
@@ -21,7 +21,6 @@ namespace DnKR.tcLauncher
         MSession session;
         CMLauncher launcher;
         
-        bool isFabricInstalled = false;
         UserProperties? properties;
 
 
@@ -29,6 +28,8 @@ namespace DnKR.tcLauncher
 
         GameLog logForm;
         bool devOps = false;
+
+        static ConcurrentQueue<string> logQueue = new ConcurrentQueue<string>();
 
         public static MinecraftPath gamePath = new MinecraftPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.tclaucner");
 
@@ -75,8 +76,7 @@ namespace DnKR.tcLauncher
             {
                 string[] v = ver.Split(Path.DirectorySeparatorChar);
                 string verName = v[v.Length - 1];
-                if (verName.Contains("fabric"))
-                    isFabricInstalled = true;
+
                 cbVersions.Items.Add(verName);
             }
             if (string.IsNullOrWhiteSpace(properties.latestVersion))
@@ -148,6 +148,13 @@ namespace DnKR.tcLauncher
             }
             finally
             {
+                Pb_File.Value = 0;
+                Lv_Status.Text = "Playing...";
+                btnLaunch.Enabled = false;
+
+                File.Delete(gamePath.ToString() + "\\logs.txt");
+                tmLog.Enabled = true;
+
                 if (logForm != null)
                     logForm.Close();
 
@@ -159,7 +166,7 @@ namespace DnKR.tcLauncher
                 }
 
                 setUiEnabled(true);
-                Lv_Status.Text = "Ready";
+                
             }
 
 
@@ -181,10 +188,26 @@ namespace DnKR.tcLauncher
             process.EnableRaisingEvents = true;
             process.ErrorDataReceived += Process_ErrorDataReceived;
             process.OutputDataReceived += Process_OutputDataReceived;
+            process.Exited += Process_Exited;
 
             process.Start();
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();
+        }
+
+        private void Process_Exited(object? sender, EventArgs e)
+        {
+            //GameLog gameLog = new();
+            //gameLog.Show();
+            tmLog.Enabled = false;
+
+            Lv_Status.Invoke((MethodInvoker)delegate {
+                Lv_Status.Text = "Ready";
+            });
+
+            btnLaunch.Invoke((MethodInvoker)delegate {
+                btnLaunch.Enabled = true;
+            });
         }
 
         private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
@@ -199,8 +222,20 @@ namespace DnKR.tcLauncher
 
         private void Output(string? msg)
         {
-            File.AppendAllText(gamePath.ToString() + "\\logs.txt", msg+'\n');
-            GameLog.AddLog(msg);
+
+            //File.AppendAllText(gamePath.ToString() + "\\logs.txt", msg + '\n');
+            //GameLog.AddLog(msg);
+            logQueue.Enqueue(msg);
+
+        }
+
+        private void tmLog_Tick(object sender, EventArgs e)
+        {
+            string msg;
+            while (logQueue.TryDequeue(out msg))
+            {
+                File.AppendAllText(gamePath.ToString() + "\\logs.txt", msg + '\n');
+            }
         }
 
         private void txbRam_KeyPress(object sender, KeyPressEventArgs e)
@@ -279,12 +314,6 @@ namespace DnKR.tcLauncher
 
         private void btnUpdatePack_Click(object? sender, EventArgs? e)
         {
-            //if (!isFabricInstalled)
-            //{
-            //    MessageBox.Show("Сначала установи фабрик!");
-            //    return;
-            //}
-
             new Thread(updateThread).Start();
 
         }
@@ -331,9 +360,6 @@ namespace DnKR.tcLauncher
                     }
 
                     updater.ExtractFile(PackageName);
-
-                    Debug.WriteLine(Process.GetCurrentProcess().MainModule.FileName);
-
 
                     if (File.Exists(gamePath + "\\tmpUpdateLauncher"))
                     {

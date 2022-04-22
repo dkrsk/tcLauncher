@@ -80,6 +80,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "InstallFabricForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Install Fabric version";
             this.Shown += new System.EventHandler(this.InstallFabricForm_Shown);
             this.ResumeLayout(false);

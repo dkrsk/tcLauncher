@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btnLaunch = new System.Windows.Forms.Button();
             this.groupMain = new System.Windows.Forms.Panel();
@@ -40,6 +41,7 @@
             this.Lv_Status = new System.Windows.Forms.Label();
             this.Pb_Progress = new System.Windows.Forms.ProgressBar();
             this.groupSettings = new System.Windows.Forms.Panel();
+            this.btnInstallQuilt = new System.Windows.Forms.Button();
             this.lblUpdate = new System.Windows.Forms.Label();
             this.lblRam = new System.Windows.Forms.Label();
             this.btnJavaChange = new System.Windows.Forms.Button();
@@ -54,7 +56,7 @@
             this.txbJavaPath = new System.Windows.Forms.TextBox();
             this.btnBkg = new System.Windows.Forms.Button();
             this.btnBkgClear = new System.Windows.Forms.Button();
-            this.btnInstallQuilt = new System.Windows.Forms.Button();
+            this.tmLog = new System.Windows.Forms.Timer(this.components);
             this.groupMain.SuspendLayout();
             this.groupSettings.SuspendLayout();
             this.SuspendLayout();
@@ -148,6 +150,13 @@
             resources.ApplyResources(this.groupSettings, "groupSettings");
             this.groupSettings.Name = "groupSettings";
             // 
+            // btnInstallQuilt
+            // 
+            resources.ApplyResources(this.btnInstallQuilt, "btnInstallQuilt");
+            this.btnInstallQuilt.Name = "btnInstallQuilt";
+            this.btnInstallQuilt.UseVisualStyleBackColor = true;
+            this.btnInstallQuilt.Click += new System.EventHandler(this.btnInstallQuilt_Click);
+            // 
             // lblUpdate
             // 
             resources.ApplyResources(this.lblUpdate, "lblUpdate");
@@ -236,12 +245,10 @@
             this.btnBkgClear.UseVisualStyleBackColor = false;
             this.btnBkgClear.Click += new System.EventHandler(this.btnBkgClear_Click);
             // 
-            // btnInstallQuilt
+            // tmLog
             // 
-            resources.ApplyResources(this.btnInstallQuilt, "btnInstallQuilt");
-            this.btnInstallQuilt.Name = "btnInstallQuilt";
-            this.btnInstallQuilt.UseVisualStyleBackColor = true;
-            this.btnInstallQuilt.Click += new System.EventHandler(this.btnInstallQuilt_Click);
+            this.tmLog.Interval = 10000;
+            this.tmLog.Tick += new System.EventHandler(this.tmLog_Tick);
             // 
             // MainForm
             // 
@@ -293,5 +300,6 @@
         private Button btnBkgClear;
         private Label label1;
         private Button btnInstallQuilt;
+        private System.Windows.Forms.Timer tmLog;
     }
 }

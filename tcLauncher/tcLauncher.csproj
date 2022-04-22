@@ -7,7 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>DnKR.tcLauncher</RootNamespace>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Company>teacup</Company>
     <ApplicationIcon>tclauncher-ico.ico</ApplicationIcon>
     <Piblisher>"CN=Damian Korsakov"</Piblisher>

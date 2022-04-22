@@ -113,7 +113,7 @@ namespace DnKR.tcLauncher
                 MLaunchOption launchOption = new MLaunchOption
                 {
 
-                    MaximumRamMb = int.Parse(txbRam.Text),
+                    MaximumRamMb = int.Parse(txbRam.Text.Replace(" ", string.Empty)),
 
 
                     Session = this.session,
@@ -144,10 +144,13 @@ namespace DnKR.tcLauncher
             }
             catch (Exception ex) // all exception
             {
+                Lv_Status.Text = "Ready";
+                btnLaunch.Enabled = true;
                 MessageBox.Show(ex.ToString());
             }
             finally
             {
+                Pb_Progress.Value = 0;
                 Pb_File.Value = 0;
                 Lv_Status.Text = "Playing...";
                 btnLaunch.Enabled = false;

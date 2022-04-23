@@ -107,12 +107,11 @@ namespace DnKR.tcLauncher
 
             try
             {
+                Debug.WriteLine(int.Parse(txbRam.Text.Replace(" ", string.Empty)));
                 MLaunchOption launchOption = new MLaunchOption
                 {
-
                     MaximumRamMb = int.Parse(txbRam.Text.Replace(" ", string.Empty)),
-
-
+                    
                     Session = this.session,
 
                     FullScreen = false
@@ -127,7 +126,14 @@ namespace DnKR.tcLauncher
                 }
 
                 if (!string.IsNullOrWhiteSpace(txbJavaArg.Text))
-                    launchOption.JVMArguments = txbJavaArg.Text.Split(' ');
+                {
+                    string[] args = txbJavaArg.Text.Split(' ');
+                    args = args.Append("-Xmx" + launchOption.MaximumRamMb + "M").ToArray();
+                    //-Xmx3G
+                    //"-Xmx" + launchOption.MaximumRamMb + "m"
+                    Debug.WriteLine(args);
+                    launchOption.JVMArguments = args;
+                }
 
                 var process = await launcher.CreateProcessAsync(cbVersions.Text, launchOption);
 
@@ -376,6 +382,14 @@ namespace DnKR.tcLauncher
                 lblUpdate.Invoke((MethodInvoker)delegate {
 
                     lblUpdate.Text = "Failed to connect\nto the sever";
+                });
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                lblUpdate.Invoke((MethodInvoker)delegate {
+
+                    lblUpdate.Text = "It seems something\nis broken...";
                 });
             }
 

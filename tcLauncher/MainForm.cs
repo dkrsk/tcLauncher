@@ -2,7 +2,7 @@
 using CmlLib.Core.Auth;
 using CmlLib.Core.Downloader;
 
-using DnKR.mineUpdater;
+using DnKR.tcLauncher.tcUpdater;
 
 using System.ComponentModel;
 using System.Diagnostics;
@@ -26,8 +26,6 @@ namespace DnKR.tcLauncher
 
         UpdaterConfig updaterConfig = config.GetUpdConfig();
 
-        GameLog logForm;
-        bool devOps = false;
 
         static ConcurrentQueue<string> logQueue = new ConcurrentQueue<string>();
 
@@ -51,7 +49,7 @@ namespace DnKR.tcLauncher
             System.Net.ServicePointManager.DefaultConnectionLimit = 256;
             launcher.FileDownloader = new AsyncParallelDownloader();
 
-            new Thread(CheckUpdate).Start();
+            new Thread(() => updateThread(this)).Start();
 
 
             await refreshVersions();
@@ -61,7 +59,6 @@ namespace DnKR.tcLauncher
             txbJavaPath.Text = properties.javaPath;
             txbJavaArg.Text = properties.javaArgs;
             txbRam.Text = properties.ram;
-            devOps = properties.devOps;
             //chbAutoUpdate.Checked = properties.autoUpdate;
         }
 
@@ -136,6 +133,12 @@ namespace DnKR.tcLauncher
 
                 UpdateProperties();
 
+                Lv_Status.Text = "Playing...";
+                btnLaunch.Enabled = false;
+
+                File.Delete(gamePath.ToString() + "\\logs.txt");
+                tmLog.Enabled = true;
+
                 StartProcess(process);
             }
             catch (Win32Exception wex) // java exception
@@ -152,21 +155,7 @@ namespace DnKR.tcLauncher
             {
                 Pb_Progress.Value = 0;
                 Pb_File.Value = 0;
-                Lv_Status.Text = "Playing...";
-                btnLaunch.Enabled = false;
 
-                File.Delete(gamePath.ToString() + "\\logs.txt");
-                tmLog.Enabled = true;
-
-                if (logForm != null)
-                    logForm.Close();
-
-                if (devOps)
-                {
-                    logForm = new GameLog();
-                    
-                    logForm.Show();
-                }
 
                 setUiEnabled(true);
                 
@@ -200,8 +189,6 @@ namespace DnKR.tcLauncher
 
         private void Process_Exited(object? sender, EventArgs e)
         {
-            //GameLog gameLog = new();
-            //gameLog.Show();
             tmLog.Enabled = false;
 
             Lv_Status.Invoke((MethodInvoker)delegate {
@@ -225,11 +212,7 @@ namespace DnKR.tcLauncher
 
         private void Output(string? msg)
         {
-
-            //File.AppendAllText(gamePath.ToString() + "\\logs.txt", msg + '\n');
-            //GameLog.AddLog(msg);
             logQueue.Enqueue(msg);
-
         }
 
         private void tmLog_Tick(object sender, EventArgs e)
@@ -317,11 +300,11 @@ namespace DnKR.tcLauncher
 
         private void btnUpdatePack_Click(object? sender, EventArgs? e)
         {
-            new Thread(updateThread).Start();
+            new Thread(() => updateThread(btnUpdatePack)).Start();
 
         }
 
-        private void updateThread()
+        private void updateThread(object? sender)
         {
             Thread.CurrentThread.IsBackground = true;
 
@@ -355,6 +338,15 @@ namespace DnKR.tcLauncher
 
                 if (RemoteVersion > CurrentVersion)
                 {
+                    if (!sender.Equals(btnUpdatePack))
+                    {
+                        lblUpdate.Invoke((MethodInvoker)delegate {
+                            lblUpdate.Text = "A new version was found!";
+                            setUiEnabled(true);
+                        });
+                        return;
+                    }
+
                     updater.DownloadFile(PackageName);
 
                     using (StreamWriter fw = new StreamWriter(gamePath.ToString() + "\\info", false))
@@ -394,60 +386,6 @@ namespace DnKR.tcLauncher
             
         }
 
-        private void CheckUpdate()
-        {
-            Thread.CurrentThread.IsBackground = true;
-
-            lblUpdate.Invoke((MethodInvoker)delegate {
-
-                lblUpdate.Text = "Updating...";
-
-            });
-
-            try
-            {
-                modpackUpdater updater = new(updaterConfig);
-
-                string[] RemoteNames = updater.GetNames();
-                string PackageName = RemoteNames[RemoteNames.Length - 1];
-
-                Int16 RemoteVersion = Convert.ToInt16(PackageName.Substring(0, PackageName.Length - 4));
-
-                Int16 CurrentVersion;
-
-                try
-                {
-                    using (StreamReader fs = new StreamReader(gamePath.ToString() + "\\info"))
-                        CurrentVersion = Convert.ToInt16(fs.ReadToEnd());
-                }
-                catch (FileNotFoundException)
-                {
-                    CurrentVersion = 0;
-                }
-                if (RemoteVersion > CurrentVersion)
-                    lblUpdate.Invoke((MethodInvoker)delegate {
-
-                        lblUpdate.Text = "A new version was found!";
-                    });
-                else
-                {
-                    lblUpdate.Invoke((MethodInvoker)delegate {
-
-                        lblUpdate.Text = "You have the latest version";
-                    });
-                }
-
-            }
-            catch (System.Net.WebException e)
-            {
-                Debug.WriteLine(e);
-
-                lblUpdate.Invoke((MethodInvoker)delegate {
-
-                    lblUpdate.Text = "Failed to connect\nto the sever";
-                });
-            }
-        }
 
 
         public void UpdateProperties()
@@ -499,7 +437,7 @@ namespace DnKR.tcLauncher
             properties.bkgPath = null;
         }
 
-
+        
     }
 }
 

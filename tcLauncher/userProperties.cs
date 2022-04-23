@@ -13,7 +13,6 @@ namespace DnKR.tcLauncher
         public string? latestVersion { get; set; }
         public string? bkgPath { get; set; } = null;
         public bool autoUpdate { get; set; } = false;
-        public bool devOps { get; set; } = false;
 
         private string path;
         private readonly string fileName = "\\tclauncher_properties.json";
@@ -49,7 +48,6 @@ namespace DnKR.tcLauncher
                     this.latestVersion = readed.latestVersion;
                     this.bkgPath = readed.bkgPath;
                     this.autoUpdate = readed.autoUpdate;
-                    this.devOps = readed.autoUpdate;
                 }
             }
         }

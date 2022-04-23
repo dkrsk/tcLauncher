@@ -2,17 +2,18 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows10.0.20348.0</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>DnKR.tcLauncher</RootNamespace>
-    <Version>1.0.1</Version>
-    <Company>teacup</Company>
+    <Version>1.0.2</Version>
+    <Company>dkrsk</Company>
     <ApplicationIcon>tclauncher-ico.ico</ApplicationIcon>
     <Piblisher>"CN=Damian Korsakov"</Piblisher>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>C:\Users\wilep\source\tcl.snk</AssemblyOriginatorKeyFile>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,9 +35,6 @@
   <ItemGroup>
     <Reference Include="CmlLib">
       <HintPath>..\CmlLib.dll</HintPath>
-    </Reference>
-    <Reference Include="mineUpdater">
-      <HintPath>..\mineUpdater.dll</HintPath>
     </Reference>
   </ItemGroup>
 

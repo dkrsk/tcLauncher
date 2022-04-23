@@ -5,8 +5,6 @@ VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tcLauncher", "tcLauncher\tcLauncher.csproj", "{55CF435A-4A48-432F-9C05-E12B517AC5E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tcUpdater", "tcUpdater\tcUpdater.csproj", "{3B464CB8-B3BB-466D-BD90-62F712ED24E2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{55CF435A-4A48-432F-9C05-E12B517AC5E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55CF435A-4A48-432F-9C05-E12B517AC5E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55CF435A-4A48-432F-9C05-E12B517AC5E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B464CB8-B3BB-466D-BD90-62F712ED24E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B464CB8-B3BB-466D-BD90-62F712ED24E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B464CB8-B3BB-466D-BD90-62F712ED24E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B464CB8-B3BB-466D-BD90-62F712ED24E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

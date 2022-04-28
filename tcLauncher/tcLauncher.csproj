@@ -7,7 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>DnKR.tcLauncher</RootNamespace>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Company>dkrsk</Company>
     <ApplicationIcon>tclauncher-ico.ico</ApplicationIcon>
     <Piblisher>"CN=Damian Korsakov"</Piblisher>
@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" />
-    <PackageReference Include="DotNetZip" Version="1.16.0" />
     <PackageReference Include="Fody" Version="6.6.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

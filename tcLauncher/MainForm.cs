@@ -15,6 +15,11 @@ namespace DnKR.tcLauncher
     {
         public MainForm()
         {
+
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+
             InitializeComponent();
         }
 
@@ -35,7 +40,6 @@ namespace DnKR.tcLauncher
         private async void MainForm_Shown(object sender, EventArgs e)
         {
 
-            
 
             properties = new();
             await properties.JsonRead();
@@ -49,17 +53,16 @@ namespace DnKR.tcLauncher
             System.Net.ServicePointManager.DefaultConnectionLimit = 256;
             launcher.FileDownloader = new AsyncParallelDownloader();
 
-            new Thread(() => updateThread(this)).Start();
-
-
-            await refreshVersions();
+            new Thread(() => updateThread(true)).Start();
 
 
             txbNicknameEnter.Text = properties.nickname;
             txbJavaPath.Text = properties.javaPath;
             txbJavaArg.Text = properties.javaArgs;
             txbRam.Text = properties.ram;
-            //chbAutoUpdate.Checked = properties.autoUpdate;
+
+            await refreshVersions();
+
         }
 
         private async Task refreshVersions()
@@ -67,26 +70,25 @@ namespace DnKR.tcLauncher
             cbVersions.Items.Clear();
 
             var versions = Directory.EnumerateDirectories(gamePath.Versions);
-            if (versions.Count() == 0) return;
-            //var versions = await launcher.GetAllVersionsAsync();
+            if (!versions.Any()) return;
+
             foreach (string ver in versions)
             {
                 string[] v = ver.Split(Path.DirectorySeparatorChar);
-                string verName = v[v.Length - 1];
+                string verName = v[^1];
 
                 cbVersions.Items.Add(verName);
             }
             if (string.IsNullOrWhiteSpace(properties.latestVersion))
-                cbVersions.Text = cbVersions.Items[cbVersions.Items.Count - 1].ToString();
+                cbVersions.Text = cbVersions.Items[^1].ToString();
             else
                 cbVersions.Text = properties.latestVersion;
-
         }
 
         private async void btnLaunch_Click(object sender, EventArgs e)
         {
 
-            if (String.IsNullOrWhiteSpace(txbNicknameEnter.Text))
+            if (string.IsNullOrWhiteSpace(txbNicknameEnter.Text))
             {
                 MessageBox.Show("Enter the nickname first!");
                 return;
@@ -99,27 +101,21 @@ namespace DnKR.tcLauncher
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txbRam.Text))
-                txbRam.Text = "2048";
 
-
-                setUiEnabled(false);
+            setUiEnabled(false);
 
             try
             {
-                Debug.WriteLine(int.Parse(txbRam.Text.Replace(" ", string.Empty)));
+
                 MLaunchOption launchOption = new MLaunchOption
                 {
-                    MaximumRamMb = int.Parse(txbRam.Text.Replace(" ", string.Empty)),
-                    
                     Session = this.session,
-
                     FullScreen = false
                 };
 
                 if (File.Exists(txbJavaPath.Text))
                     launchOption.JavaPath = txbJavaPath.Text;
-                else if (!string.IsNullOrWhiteSpace(txbJavaPath.Text) && txbJavaPath.Text != "Use default")
+                else if (!string.IsNullOrWhiteSpace(txbJavaPath.Text))
                 {
                     MessageBox.Show("Incorrent location to java");
                     return;
@@ -127,13 +123,11 @@ namespace DnKR.tcLauncher
 
                 if (!string.IsNullOrWhiteSpace(txbJavaArg.Text))
                 {
-                    string[] args = txbJavaArg.Text.Split(' ');
-                    args = args.Append("-Xmx" + launchOption.MaximumRamMb + "M").ToArray();
-                    //-Xmx3G
-                    //"-Xmx" + launchOption.MaximumRamMb + "m"
-                    Debug.WriteLine(args);
-                    launchOption.JVMArguments = args;
+                    launchOption.JVMArguments = txbJavaArg.Text.Split(' ');
                 }
+
+                if (!string.IsNullOrWhiteSpace(txbRam.Text))
+                    launchOption.MaximumRamMb = int.Parse(txbRam.Text);
 
                 var process = await launcher.CreateProcessAsync(cbVersions.Text, launchOption);
 
@@ -142,11 +136,12 @@ namespace DnKR.tcLauncher
                 Lv_Status.Text = "Playing...";
                 btnLaunch.Enabled = false;
 
-                File.Delete(gamePath.ToString() + "\\logs.txt");
+                File.Delete(Path.Combine(gamePath.ToString(), "\\logs.txt"));
                 tmLog.Enabled = true;
 
                 StartProcess(process);
             }
+
             catch (Win32Exception wex) // java exception
             {
                 MessageBox.Show(wex + "\n\nIt seems your java setting has problem");
@@ -162,12 +157,9 @@ namespace DnKR.tcLauncher
                 Pb_Progress.Value = 0;
                 Pb_File.Value = 0;
 
-
                 setUiEnabled(true);
                 
             }
-
-
         }
 
         private void setUiEnabled(bool value)
@@ -306,26 +298,30 @@ namespace DnKR.tcLauncher
 
         private void btnUpdatePack_Click(object? sender, EventArgs? e)
         {
-            new Thread(() => updateThread(btnUpdatePack)).Start();
+            new Thread(() => updateThread(false)).Start();
 
         }
 
-        private void updateThread(object? sender)
+        private async void updateThread(bool IsChecking)
         {
             Thread.CurrentThread.IsBackground = true;
 
             lblUpdate.Invoke((MethodInvoker)delegate {
 
                 lblUpdate.Text = "Updating...";
-                setUiEnabled(false);
+                setUiEnabled(IsChecking);
             });
             
 
             try
             {
                 modpackUpdater updater = new(updaterConfig);
+                updater.ProgressChanged += UpdateProgress;
 
-                string[] RemoteNames = updater.GetNames();
+                string infoPath = Path.Combine(gamePath.ToString(), "info");
+                Debug.WriteLine(infoPath);
+
+                string[] RemoteNames = await updater.GetNamesAsync();
                 string PackageName = RemoteNames[RemoteNames.Length - 1];
 
                 Int16 RemoteVersion = Convert.ToInt16(PackageName.Substring(0, PackageName.Length - 4));
@@ -334,7 +330,7 @@ namespace DnKR.tcLauncher
 
                 try
                 {
-                    using (StreamReader fs = new StreamReader(gamePath.ToString() + "\\info"))
+                    using (StreamReader fs = new StreamReader(infoPath))
                         CurrentVersion = Convert.ToInt16(fs.ReadToEnd());
                 }
                 catch (FileNotFoundException)
@@ -344,7 +340,7 @@ namespace DnKR.tcLauncher
 
                 if (RemoteVersion > CurrentVersion)
                 {
-                    if (!sender.Equals(btnUpdatePack))
+                    if (IsChecking)
                     {
                         lblUpdate.Invoke((MethodInvoker)delegate {
                             lblUpdate.Text = "A new version was found!";
@@ -353,19 +349,19 @@ namespace DnKR.tcLauncher
                         return;
                     }
 
-                    updater.DownloadFile(PackageName);
+                    await updater.DownloadFileAsync(PackageName);
 
-                    using (StreamWriter fw = new StreamWriter(gamePath.ToString() + "\\info", false))
-                    {
-                        fw.Write(RemoteVersion);
-                    }
+                    await updater.ExtractFileAsync(PackageName);
 
-                    updater.ExtractFile(PackageName);
-
-                    if (File.Exists(gamePath + "\\tmpUpdateLauncher"))
+                    if (File.Exists(gamePath + "\\tmpUpdateLauncher")) // not stable
                     {
                         Process currentProc = Process.GetCurrentProcess();
                         Process.Start($"{gamePath}\\tcUpdater.exe", $"{gamePath}\\tmpUpdateLauncher {currentProc.MainModule.FileName} {currentProc.Id} {PackageName}");
+                    }
+
+                    using (StreamWriter fw = new StreamWriter(infoPath, false))
+                    {
+                        fw.Write(RemoteVersion);
                     }
 
                     MessageBox.Show($"Success! Updated to build{RemoteVersion}");
@@ -397,7 +393,25 @@ namespace DnKR.tcLauncher
 
                 setUiEnabled(true);
             });
-            
+
+        }
+
+        private void UpdateProgress(long length, long position)
+        {
+            Debug.WriteLine($"{length} {position}");
+
+            if (Pb_Progress.Value == 100)
+            {
+                Pb_Progress.Invoke((MethodInvoker)delegate {
+                    Pb_Progress.Value = 0;
+                });
+                return;
+            }
+
+            Pb_Progress.Invoke((MethodInvoker)delegate {
+                Pb_Progress.Maximum = 100;
+                Pb_Progress.Value = (int)((position / length) * 100);
+            });
         }
 
 
@@ -451,7 +465,7 @@ namespace DnKR.tcLauncher
             properties.bkgPath = null;
         }
 
-        
+
     }
 }
 

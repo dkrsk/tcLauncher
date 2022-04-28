@@ -1,6 +1,5 @@
-﻿using System.Diagnostics;
-using System.Net;
-using Ionic.Zip;
+﻿using System.Net;
+using ICSharpCode.SharpZipLib.Zip;
 
 
 namespace DnKR.tcLauncher.tcUpdater
@@ -14,8 +13,11 @@ namespace DnKR.tcLauncher.tcUpdater
 
         public string[] RemoveFilesList { get; set; } = { "mods", "moddata", "config", ".fabric", "resources", "shaderpacks" };
 
+        public delegate void ProgressHandler(long length, long position);
+        public event ProgressHandler? ProgressChanged;
+
         public modpackUpdater(string path, string uri, string ftpPath, NetworkCredential credentials){
-            this.path = path + "\\";
+            this.path = Path.GetFullPath(path);
             this.uri = uri;
             this.ftpPath = ftpPath;
             this.credentials = credentials;
@@ -23,7 +25,7 @@ namespace DnKR.tcLauncher.tcUpdater
 
         public modpackUpdater(UpdaterConfig config)
         {
-            this.path = config.path + "\\";
+            this.path = Path.GetFullPath(config.path);
             this.uri = config.uri;
             this.ftpPath = config.ftpPath;
             this.credentials = config.credential;
@@ -36,8 +38,9 @@ namespace DnKR.tcLauncher.tcUpdater
 
         public FtpWebRequest createRequest(string FileName, string method)
         {
-            FtpWebRequest rq = (FtpWebRequest)WebRequest.Create(this.uri + ftpPath + FileName);
+            FtpWebRequest rq = (FtpWebRequest)WebRequest.Create(Path.Combine(uri,ftpPath,FileName));
 
+            rq.UseBinary = true;
             rq.Credentials = this.credentials;
             rq.Method = method;
 
@@ -60,50 +63,106 @@ namespace DnKR.tcLauncher.tcUpdater
             return list.ToArray();
         }
 
+        public async Task<string[]> GetNamesAsync()
+        {
+            return await Task.Run(() => GetNames());
+        }
+
         public void DownloadFile(string PackageName)
         {
-            int bufferSize = 131072;
+            string realPath = Path.Combine(path, PackageName);
 
             var request = createRequest(PackageName, WebRequestMethods.Ftp.DownloadFile);
 
+            const int bufferSize = 131072;
             byte[] buffer = new byte[bufferSize];
+
             FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+            //long fileSize = response.ContentLength;
 
             Stream stream = response.GetResponseStream();
 
-            using (var fs = new FileStream(path + PackageName, FileMode.OpenOrCreate)) {
+            using (var fs = new FileStream(realPath, FileMode.Create)) {
+                long position = 0;
 				int readCount = stream.Read(buffer, 0, bufferSize);
  
 				while (readCount > 0) {
 					fs.Write(buffer, 0, readCount);
 					readCount = stream.Read(buffer, 0, bufferSize);
-				}
+                    position += readCount;
+                    
+                    //if (ProgressChanged != null) ProgressChanged(fileSize, position);
+                }
 			}
 
         }
 
+        public async Task DownloadFileAsync(string PackageName)
+        {
+            await Task.Run(() => DownloadFile(PackageName));
+        }
+
         public void ExtractFile(string PackageName)
         {
+            string realPath = Path.Combine(path, PackageName);
 
-            using (ZipFile zipObj = ZipFile.Read(path + PackageName))
+            foreach(string dir in RemoveFilesList)
             {
-
-                foreach (ZipEntry entry in zipObj)
-                {
-                    foreach (string dir in RemoveFilesList)
-                    {
-                        if (Directory.Exists(path + dir) && entry.FileName.Contains(dir))
-                        {
-                            Directory.Delete(path + dir, true);
-                        }
-                    }
-                }
-
-                zipObj.ExtractAll(path, ExtractExistingFileAction.DoNotOverwrite);
-                
+                if (Directory.Exists(Path.Combine(path, dir)))
+                    Directory.Delete(Path.Combine(path, dir), true);
             }
 
-            File.Delete(path + PackageName);
+            using (ZipInputStream zipStream = new ZipInputStream(File.OpenRead(realPath)))
+            {
+                ZipEntry entry;
+
+                while ((entry = zipStream.GetNextEntry()) != null)
+                {
+                    
+                    if (entry.IsFile)
+                    {
+                        if (entry.Name.EndsWith("/"))
+                        {
+                            string dirpath = Path.Combine(path, entry.Name);
+                            if (Directory.Exists(dirpath))
+                                Directory.Delete(dirpath, true);
+                            Directory.CreateDirectory(dirpath);
+                        }
+                        else
+                        {
+                            //if (File.Exists(Path.Combine(path, entry.Name)))
+                            //    continue;
+
+                            FileStream streamWriter = File.Create(Path.Combine(path, entry.Name));
+
+                            const int bufferSize = 16384;
+                            byte[] buffer = new byte[bufferSize];
+
+                            int readCount = zipStream.Read(buffer, 0, bufferSize);
+
+                            while (readCount > 0)
+                            {
+                                streamWriter.Write(buffer, 0, readCount);
+                                readCount = zipStream.Read(buffer, 0, bufferSize);
+                            }
+                            streamWriter.Close();
+                        }
+                    }
+                    if (ProgressChanged != null && zipStream.Available == 1) ProgressChanged(zipStream.Length, zipStream.Position);
+                }
+            }
+
+            File.Delete(realPath);
+        }
+
+        public async Task ExtractFileAsync(string PackageName)
+        {
+            await Task.Run(() => ExtractFile(PackageName));
+        }
+
+        public void UpdateProgress(int length, int position)
+        {
+
         }
 
     }

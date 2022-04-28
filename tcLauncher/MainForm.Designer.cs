@@ -63,16 +63,17 @@
             // 
             // btnLaunch
             // 
+            this.btnLaunch.BackColor = System.Drawing.Color.Transparent;
+            this.btnLaunch.ForeColor = System.Drawing.Color.Black;
             resources.ApplyResources(this.btnLaunch, "btnLaunch");
             this.btnLaunch.Name = "btnLaunch";
-            this.btnLaunch.UseVisualStyleBackColor = true;
+            this.btnLaunch.UseVisualStyleBackColor = false;
             this.btnLaunch.Click += new System.EventHandler(this.btnLaunch_Click);
             // 
             // groupMain
             // 
             this.groupMain.BackColor = System.Drawing.Color.Transparent;
             this.groupMain.BackgroundImage = global::DnKR.tcLauncher.Properties.Resources.tcGroup_bg;
-            resources.ApplyResources(this.groupMain, "groupMain");
             this.groupMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.groupMain.Controls.Add(this.label1);
             this.groupMain.Controls.Add(this.Pb_File);
@@ -83,6 +84,7 @@
             this.groupMain.Controls.Add(this.Lv_Status);
             this.groupMain.Controls.Add(this.Pb_Progress);
             this.groupMain.Controls.Add(this.btnLaunch);
+            resources.ApplyResources(this.groupMain, "groupMain");
             this.groupMain.Name = "groupMain";
             // 
             // label1
@@ -105,6 +107,7 @@
             // 
             // cbVersions
             // 
+            this.cbVersions.ForeColor = System.Drawing.Color.Black;
             this.cbVersions.FormattingEnabled = true;
             resources.ApplyResources(this.cbVersions, "cbVersions");
             this.cbVersions.Name = "cbVersions";
@@ -116,6 +119,8 @@
             // 
             // txbNicknameEnter
             // 
+            this.txbNicknameEnter.BackColor = System.Drawing.Color.White;
+            this.txbNicknameEnter.ForeColor = System.Drawing.Color.Black;
             resources.ApplyResources(this.txbNicknameEnter, "txbNicknameEnter");
             this.txbNicknameEnter.Name = "txbNicknameEnter";
             // 

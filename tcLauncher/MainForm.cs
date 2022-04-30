@@ -53,7 +53,8 @@ namespace DnKR.tcLauncher
             System.Net.ServicePointManager.DefaultConnectionLimit = 256;
             launcher.FileDownloader = new AsyncParallelDownloader();
 
-            new Thread(() => updateThread(true)).Start();
+            await updateThread(true);
+            //new Thread(() => updateThread(true)).Start();
 
 
             txbNicknameEnter.Text = properties.nickname;
@@ -296,13 +297,13 @@ namespace DnKR.tcLauncher
             Lv_Status.Text = $"{e.FileKind} : {e.FileName} ({e.ProgressedFileCount}/{e.TotalFileCount})";
         }
 
-        private void btnUpdatePack_Click(object? sender, EventArgs? e)
+        private async void btnUpdatePack_Click(object? sender, EventArgs? e)
         {
-            new Thread(() => updateThread(false)).Start();
-
+            //new Thread(() => updateThread(false)).Start();
+            await updateThread(false);
         }
 
-        private async void updateThread(bool IsChecking)
+        private async Task updateThread(bool IsChecking)
         {
             Thread.CurrentThread.IsBackground = true;
 
@@ -398,7 +399,7 @@ namespace DnKR.tcLauncher
 
         private void UpdateProgress(long length, long position)
         {
-            Debug.WriteLine($"{length} {position}");
+            
 
             if (Pb_Progress.Value == 100)
             {
@@ -409,7 +410,7 @@ namespace DnKR.tcLauncher
             }
 
             Pb_Progress.Invoke((MethodInvoker)delegate {
-                Pb_Progress.Maximum = 100;
+                Debug.WriteLine($"{length} {position}");
                 Pb_Progress.Value = (int)((position / length) * 100);
             });
         }

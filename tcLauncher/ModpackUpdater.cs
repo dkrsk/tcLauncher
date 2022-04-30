@@ -56,7 +56,8 @@ namespace DnKR.tcLauncher.tcUpdater
 
             StreamReader reader = new StreamReader(request.GetResponse().GetResponseStream(), true);
 
-            while (!reader.EndOfStream) {
+            while (!reader.EndOfStream)
+            {
                 list.Add(reader.ReadLine());
             }
 
@@ -82,11 +83,13 @@ namespace DnKR.tcLauncher.tcUpdater
 
             Stream stream = response.GetResponseStream();
 
-            using (var fs = new FileStream(realPath, FileMode.Create)) {
+            using (var fs = new FileStream(realPath, FileMode.Create))
+            {
                 long position = 0;
 				int readCount = stream.Read(buffer, 0, bufferSize);
  
-				while (readCount > 0) {
+				while (readCount > 0)
+                {
 					fs.Write(buffer, 0, readCount);
 					readCount = stream.Read(buffer, 0, bufferSize);
                     position += readCount;
@@ -118,37 +121,28 @@ namespace DnKR.tcLauncher.tcUpdater
 
                 while ((entry = zipStream.GetNextEntry()) != null)
                 {
-                    
                     if (entry.IsFile)
                     {
-                        if (entry.Name.EndsWith("/"))
+                        FileStream streamWriter = new FileStream(Path.Combine(path, entry.Name), FileMode.Create);
+
+                        const int bufferSize = 8192;
+                        byte[] buffer = new byte[bufferSize];
+
+                        int readCount = zipStream.Read(buffer, 0, bufferSize);
+
+                        while (readCount > 0)
                         {
-                            string dirpath = Path.Combine(path, entry.Name);
-                            if (Directory.Exists(dirpath))
-                                Directory.Delete(dirpath, true);
-                            Directory.CreateDirectory(dirpath);
+                            streamWriter.Write(buffer, 0, readCount);
+                            readCount = zipStream.Read(buffer, 0, bufferSize);
                         }
-                        else
-                        {
-                            //if (File.Exists(Path.Combine(path, entry.Name)))
-                            //    continue;
-
-                            FileStream streamWriter = File.Create(Path.Combine(path, entry.Name));
-
-                            const int bufferSize = 16384;
-                            byte[] buffer = new byte[bufferSize];
-
-                            int readCount = zipStream.Read(buffer, 0, bufferSize);
-
-                            while (readCount > 0)
-                            {
-                                streamWriter.Write(buffer, 0, readCount);
-                                readCount = zipStream.Read(buffer, 0, bufferSize);
-                            }
-                            streamWriter.Close();
-                        }
+                        streamWriter.Close();
                     }
-                    if (ProgressChanged != null && zipStream.Available == 1) ProgressChanged(zipStream.Length, zipStream.Position);
+                    else
+                    {
+                        Directory.CreateDirectory(Path.Combine(path, entry.Name));
+                    }
+                    if (ProgressChanged != null && zipStream.Available == 1 && zipStream.Length != 0) // not stable
+                        ProgressChanged(zipStream.Length, zipStream.Position);
                 }
             }
 

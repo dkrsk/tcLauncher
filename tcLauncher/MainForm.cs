@@ -15,6 +15,8 @@ namespace DnKR.tcLauncher
     {
         public MainForm()
         {
+            properties = new();
+            new Task(async () => await properties.JsonRead()).Start();
 
             this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
@@ -25,9 +27,8 @@ namespace DnKR.tcLauncher
 
         MSession session;
         CMLauncher launcher;
-        
-        UserProperties? properties;
 
+        UserProperties properties;
 
         UpdaterConfig updaterConfig = config.GetUpdConfig();
 
@@ -40,10 +41,6 @@ namespace DnKR.tcLauncher
         private async void MainForm_Shown(object sender, EventArgs e)
         {
 
-
-            properties = new();
-            await properties.JsonRead();
-
             if (properties.BkgPath != null && File.Exists(properties.BkgPath))
                 this.BackgroundImage = Image.FromFile(properties.BkgPath);
 
@@ -53,7 +50,7 @@ namespace DnKR.tcLauncher
             System.Net.ServicePointManager.DefaultConnectionLimit = 256;
             launcher.FileDownloader = new AsyncParallelDownloader();
 
-            await updateThread(true);
+            await UpdateModpack(true);
             //new Thread(() => updateThread(true)).Start();
 
 
@@ -232,7 +229,7 @@ namespace DnKR.tcLauncher
         {
             setUiEnabled(false);
             Form form = new InstallVanillaForm(launcher);
-            form.FormClosing += delegate { setUiEnabled(true); refreshVersions(); };
+            form.FormClosing += async delegate { setUiEnabled(true); await refreshVersions(); };
             form.Show();
 
         }
@@ -241,7 +238,7 @@ namespace DnKR.tcLauncher
         {
             setUiEnabled(false);
             InstallFabricForm form = new(launcher);
-            form.FormClosing += delegate { setUiEnabled(true); refreshVersions(); };
+            form.FormClosing += async delegate { setUiEnabled(true); await refreshVersions(); };
             form.Show();
 
         }
@@ -250,7 +247,7 @@ namespace DnKR.tcLauncher
         {
             setUiEnabled(false);
             InstallQuiltForm form = new(launcher);
-            form.FormClosing += delegate { setUiEnabled(true); refreshVersions(); };
+            form.FormClosing += async delegate { setUiEnabled(true); await refreshVersions(); };
             form.Show();
         }
 
@@ -263,7 +260,7 @@ namespace DnKR.tcLauncher
             dialog.Multiselect = false;
 
             dialog.ShowDialog();
-            //javaPath = dialog.FileName;
+
             try
             {
                 txbJavaPath.Text = dialog.FileName;
@@ -276,7 +273,7 @@ namespace DnKR.tcLauncher
         }
 
         private readonly int uiThreadId = Thread.CurrentThread.ManagedThreadId;
-        private void Launcher_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        private void Launcher_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             if (Thread.CurrentThread.ManagedThreadId != uiThreadId)
             {
@@ -300,140 +297,12 @@ namespace DnKR.tcLauncher
         private async void btnUpdatePack_Click(object? sender, EventArgs? e)
         {
             //new Thread(() => updateThread(false)).Start();
-            await updateThread(false);
-        }
-
-        private async Task updateThread(bool IsChecking)
-        {
-            Thread.CurrentThread.IsBackground = true;
-
-            lblUpdate.Invoke((MethodInvoker)delegate {
-
-                lblUpdate.Text = "Updating...";
-                setUiEnabled(IsChecking);
-            });
-            
-
-            try
-            {
-                modpackUpdater updater = new(updaterConfig);
-
-                string infoPath = Path.Combine(gamePath.ToString(), "info");
-                Debug.WriteLine(infoPath);
-
-                string[] RemoteNames = await updater.GetNamesAsync();
-                string PackageName = RemoteNames[RemoteNames.Length - 1];
-
-                Int16 RemoteVersion = Convert.ToInt16(PackageName.Substring(0, PackageName.Length - 4));
-
-                Int16 CurrentVersion;
-
-                try
-                {
-                    using (StreamReader fs = new StreamReader(infoPath))
-                        CurrentVersion = Convert.ToInt16(fs.ReadToEnd());
-                }
-                catch (FileNotFoundException)
-                {
-                    CurrentVersion = 0;
-                }
-
-                if (RemoteVersion > CurrentVersion)
-                {
-                    if (IsChecking)
-                    {
-                        lblUpdate.Invoke((MethodInvoker)delegate {
-                            lblUpdate.Text = "A new version was found!";
-                            setUiEnabled(true);
-                        });
-                        return;
-                    }
-
-                    await updater.DownloadFileAsync(PackageName);
-
-                    await updater.ExtractFileAsync(PackageName);
-
-                    if (File.Exists(gamePath + "\\tmpUpdateLauncher")) // not stable
-                    {
-                        Process currentProc = Process.GetCurrentProcess();
-                        Process.Start($"{gamePath}\\tcUpdater.exe", $"{gamePath}\\tmpUpdateLauncher {currentProc.MainModule.FileName} {currentProc.Id} {PackageName}");
-                    }
-
-                    using (StreamWriter fw = new StreamWriter(infoPath, false))
-                    {
-                        fw.Write(RemoteVersion);
-                    }
-
-                    MessageBox.Show($"Success! Updated to build{RemoteVersion}");
-                }
-
-                lblUpdate.Invoke((MethodInvoker)delegate {
-
-                    lblUpdate.Text = "You have the latest version";
-                });
-
-            }
-            catch (System.Net.WebException)
-            {
-                lblUpdate.Invoke((MethodInvoker)delegate {
-
-                    lblUpdate.Text = "Failed to connect\nto the sever";
-                });
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-                lblUpdate.Invoke((MethodInvoker)delegate {
-
-                    lblUpdate.Text = "It seems something\nis broken...";
-                });
-            }
-
-            lblUpdate.Invoke((MethodInvoker)delegate {
-
-                setUiEnabled(true);
-            });
-
-        }
-
-        private void UpdateProgress(long length, long position)
-        {
-            
-
-            if (Pb_Progress.Value == 100)
-            {
-                Pb_Progress.Invoke((MethodInvoker)delegate {
-                    Pb_Progress.Value = 0;
-                });
-                return;
-            }
-
-            Pb_Progress.Invoke((MethodInvoker)delegate {
-                Debug.WriteLine($"{length} {position}");
-                Pb_Progress.Value = (int)((position / length) * 100);
-            });
-        }
-
-
-
-        public void UpdateProperties()
-        {
-            properties.JavaPath = txbJavaPath.Text;
-            properties.Ram = txbRam.Text;
-            properties.LatestVersion = cbVersions.Text;
-            properties.Nickname = txbNicknameEnter.Text;
-            properties.JavaArgs = txbJavaArg.Text;
-            properties.JsonWrite();
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            UpdateProperties();
+            await UpdateModpack(false);
         }
 
         private void btnLocaleFiles_Click(object sender, EventArgs e)
         {
-            Process.Start("explorer.exe",gamePath.ToString());
+            Process.Start("explorer.exe", gamePath.ToString());
         }
 
         private void btnBkg_Click(object sender, EventArgs e)
@@ -445,7 +314,7 @@ namespace DnKR.tcLauncher
             dialog.Multiselect = false;
 
             dialog.ShowDialog();
-            //javaPath = dialog.FileName;
+
             try
             {
                 this.BackgroundImage = Image.FromFile(dialog.FileName);
@@ -461,10 +330,56 @@ namespace DnKR.tcLauncher
         private void btnBkgClear_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.tclaucher_bg;
-            properties.BkgPath = null;
+            properties.BkgPath = string.Empty;
         }
 
+        private async Task UpdateModpack(bool IsChecking)
+        {
+            Thread.CurrentThread.IsBackground = true;
 
+            UpdateStateHandler(lblUpdate.Text, false);
+
+            try
+            {
+                ModpackUpdater.UpdateModpack(updaterConfig, (msg, uis) => UpdateStateHandler(msg, uis), IsChecking);
+            }
+            catch (System.Net.WebException)
+            {
+                UpdateStateHandler("Failed to connect\nto the server");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                UpdateStateHandler("It seems something\nis broken...");
+            }
+
+            UpdateStateHandler(lblUpdate.Text);
+
+        }
+
+        private void UpdateStateHandler(string message, bool uiState = true)
+        {
+            this.Invoke((MethodInvoker)delegate
+            {
+                lblUpdate.Text = message;
+                setUiEnabled(uiState);
+            });
+        }
+        public async void UpdateProperties()
+        {
+            properties.JavaPath = txbJavaPath.Text;
+            properties.Ram = txbRam.Text;
+            properties.LatestVersion = cbVersions.Text;
+            properties.Nickname = txbNicknameEnter.Text;
+            properties.JavaArgs = txbJavaArg.Text;
+
+            await properties.JsonWrite();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            UpdateProperties();
+        }
     }
 }
 

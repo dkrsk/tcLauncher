@@ -1,10 +1,11 @@
 ﻿using System.Net;
+using System.Diagnostics;
 using ICSharpCode.SharpZipLib.Zip;
 
 
 namespace DnKR.tcLauncher.tcUpdater
 {
-    public class modpackUpdater
+    public class UpdateBuilder
     {
         private readonly string path;
         private readonly string uri;
@@ -13,14 +14,14 @@ namespace DnKR.tcLauncher.tcUpdater
 
         public string[] RemoveFilesList { get; set; } = { "mods", "moddata", "config", ".fabric", "resources", "shaderpacks" };
 
-        public modpackUpdater(string path, string uri, string ftpPath, NetworkCredential credentials){
+        public UpdateBuilder(string path, string uri, string ftpPath, NetworkCredential credentials){
             this.path = Path.GetFullPath(path);
             this.uri = uri;
             this.ftpPath = ftpPath;
             this.credentials = credentials;
         }
 
-        public modpackUpdater(UpdaterConfig config)
+        public UpdateBuilder(UpdaterConfig config)
         {
             this.path = Path.GetFullPath(config.path);
             this.uri = config.uri;
@@ -148,6 +149,67 @@ namespace DnKR.tcLauncher.tcUpdater
             await Task.Run(() => ExtractFile(PackageName));
         }
 
+    }
+
+    public delegate void StateChanged(string message, bool uiState);
+    public static class ModpackUpdater
+    {
+        public static async void UpdateModpack(UpdaterConfig config, StateChanged stateChanged, bool isChecking = false)
+        {
+            UpdateBuilder updater = new(config);
+            string gamePath = config.path;
+
+            string[] remoteNames = await updater.GetNamesAsync();
+            string packageName = remoteNames[^1];
+            short remoteVersion = Convert.ToInt16(packageName[0..^4]);
+            short currentVersion;
+
+            string infoPath = Path.Combine(gamePath, "info");
+
+            stateChanged("Updating..", false);
+
+            try
+            {
+                using (StreamReader sr = new(infoPath))
+                {
+                    currentVersion = Convert.ToInt16(sr.ReadToEnd());
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                currentVersion = 0;
+            }
+
+            if(remoteVersion > currentVersion)
+            {
+                if (isChecking)
+                {
+                    stateChanged("A new version was found!", true);
+                    return;
+                }
+
+                await updater.DownloadFileAsync(packageName);
+
+                await updater.ExtractFileAsync(packageName);
+
+                if (File.Exists(gamePath + "\\tmpUpdateLauncher")) // not stable
+                {
+                    Process currentProc = Process.GetCurrentProcess();
+                    Process.Start($"{gamePath}\\tcUpdater.exe", $"{gamePath}\\tmpUpdateLauncher {currentProc.MainModule.FileName} {currentProc.Id} {packageName}");
+                }
+
+                using (StreamWriter fw = new StreamWriter(infoPath, false))
+                {
+                    fw.Write(remoteVersion);
+                }
+
+                stateChanged($"Success!\nUpdated to build{remoteVersion}", true);
+            }
+            else
+            {
+                stateChanged("You have the latest version!", true);
+            }
+        }
     }
 
     public class UpdaterConfig

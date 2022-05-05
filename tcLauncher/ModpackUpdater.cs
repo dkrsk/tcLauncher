@@ -6,15 +6,12 @@ namespace DnKR.tcLauncher.tcUpdater
 {
     public class modpackUpdater
     {
-        private string path;
-        private string uri;
-        private string ftpPath;
-        private NetworkCredential credentials;
+        private readonly string path;
+        private readonly string uri;
+        private readonly string ftpPath;
+        private readonly NetworkCredential credentials;
 
         public string[] RemoveFilesList { get; set; } = { "mods", "moddata", "config", ".fabric", "resources", "shaderpacks" };
-
-        public delegate void ProgressHandler(long length, long position);
-        public event ProgressHandler? ProgressChanged;
 
         public modpackUpdater(string path, string uri, string ftpPath, NetworkCredential credentials){
             this.path = Path.GetFullPath(path);
@@ -31,12 +28,12 @@ namespace DnKR.tcLauncher.tcUpdater
             this.credentials = config.credential;
         }
 
-        private FtpWebRequest createRequest(string method)
+        private FtpWebRequest CreateRequest(string method)
         {
-            return createRequest("",method);
+            return CreateRequest("",method);
         }
 
-        public FtpWebRequest createRequest(string FileName, string method)
+        public FtpWebRequest CreateRequest(string FileName, string method)
         {
             FtpWebRequest rq = (FtpWebRequest)WebRequest.Create(Path.Combine(uri,ftpPath,FileName));
 
@@ -52,7 +49,7 @@ namespace DnKR.tcLauncher.tcUpdater
 
             var list = new List<string>();
 
-            var request = createRequest(WebRequestMethods.Ftp.ListDirectory);
+            var request = CreateRequest(WebRequestMethods.Ftp.ListDirectory);
 
             StreamReader reader = new StreamReader(request.GetResponse().GetResponseStream(), true);
 
@@ -73,13 +70,12 @@ namespace DnKR.tcLauncher.tcUpdater
         {
             string realPath = Path.Combine(path, PackageName);
 
-            var request = createRequest(PackageName, WebRequestMethods.Ftp.DownloadFile);
+            var request = CreateRequest(PackageName, WebRequestMethods.Ftp.DownloadFile);
 
             const int bufferSize = 131072;
             byte[] buffer = new byte[bufferSize];
 
             FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-            //long fileSize = response.ContentLength;
 
             Stream stream = response.GetResponseStream();
 
@@ -93,8 +89,6 @@ namespace DnKR.tcLauncher.tcUpdater
 					fs.Write(buffer, 0, readCount);
 					readCount = stream.Read(buffer, 0, bufferSize);
                     position += readCount;
-                    
-                    //if (ProgressChanged != null) ProgressChanged(fileSize, position);
                 }
 			}
 
@@ -112,7 +106,9 @@ namespace DnKR.tcLauncher.tcUpdater
             foreach(string dir in RemoveFilesList)
             {
                 if (Directory.Exists(Path.Combine(path, dir)))
+                {
                     Directory.Delete(Path.Combine(path, dir), true);
+                }
             }
 
             using (ZipInputStream zipStream = new ZipInputStream(File.OpenRead(realPath)))
@@ -141,8 +137,6 @@ namespace DnKR.tcLauncher.tcUpdater
                     {
                         Directory.CreateDirectory(Path.Combine(path, entry.Name));
                     }
-                    if (ProgressChanged != null && zipStream.Available == 1 && zipStream.Length != 0) // not stable
-                        ProgressChanged(zipStream.Length, zipStream.Position);
                 }
             }
 
@@ -154,19 +148,14 @@ namespace DnKR.tcLauncher.tcUpdater
             await Task.Run(() => ExtractFile(PackageName));
         }
 
-        public void UpdateProgress(int length, int position)
-        {
-
-        }
-
     }
 
     public class UpdaterConfig
     {
-        public string path;
-        public string uri;
-        public string ftpPath;
-        public NetworkCredential credential;
+        public readonly string path;
+        public readonly string uri;
+        public readonly string ftpPath;
+        public readonly NetworkCredential credential;
 
         public UpdaterConfig(string path, string uri, string ftpPath, NetworkCredential credential)
         {

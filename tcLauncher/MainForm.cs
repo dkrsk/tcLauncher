@@ -44,8 +44,8 @@ namespace DnKR.tcLauncher
             properties = new();
             await properties.JsonRead();
 
-            if (properties.bkgPath != null && File.Exists(properties.bkgPath))
-                this.BackgroundImage = Image.FromFile(properties.bkgPath);
+            if (properties.BkgPath != null && File.Exists(properties.BkgPath))
+                this.BackgroundImage = Image.FromFile(properties.BkgPath);
 
             this.launcher = new CMLauncher(gamePath);
             launcher.FileChanged += Launcher_FileChanged;
@@ -57,10 +57,10 @@ namespace DnKR.tcLauncher
             //new Thread(() => updateThread(true)).Start();
 
 
-            txbNicknameEnter.Text = properties.nickname;
-            txbJavaPath.Text = properties.javaPath;
-            txbJavaArg.Text = properties.javaArgs;
-            txbRam.Text = properties.ram;
+            txbNicknameEnter.Text = properties.Nickname;
+            txbJavaPath.Text = properties.JavaPath;
+            txbJavaArg.Text = properties.JavaArgs;
+            txbRam.Text = properties.Ram;
 
             await refreshVersions();
 
@@ -80,10 +80,10 @@ namespace DnKR.tcLauncher
 
                 cbVersions.Items.Add(verName);
             }
-            if (string.IsNullOrWhiteSpace(properties.latestVersion))
+            if (string.IsNullOrWhiteSpace(properties.LatestVersion))
                 cbVersions.Text = cbVersions.Items[^1].ToString();
             else
-                cbVersions.Text = properties.latestVersion;
+                cbVersions.Text = properties.LatestVersion;
         }
 
         private async void btnLaunch_Click(object sender, EventArgs e)
@@ -317,7 +317,6 @@ namespace DnKR.tcLauncher
             try
             {
                 modpackUpdater updater = new(updaterConfig);
-                updater.ProgressChanged += UpdateProgress;
 
                 string infoPath = Path.Combine(gamePath.ToString(), "info");
                 Debug.WriteLine(infoPath);
@@ -419,12 +418,11 @@ namespace DnKR.tcLauncher
 
         public void UpdateProperties()
         {
-            properties.javaPath = txbJavaPath.Text;
-            properties.ram = txbRam.Text;
-            properties.latestVersion = cbVersions.Text;
-            properties.nickname = txbNicknameEnter.Text;
-            properties.javaArgs = txbJavaArg.Text;
-            properties.autoUpdate = chbAutoUpdate.Checked;
+            properties.JavaPath = txbJavaPath.Text;
+            properties.Ram = txbRam.Text;
+            properties.LatestVersion = cbVersions.Text;
+            properties.Nickname = txbNicknameEnter.Text;
+            properties.JavaArgs = txbJavaArg.Text;
             properties.JsonWrite();
         }
 
@@ -451,7 +449,7 @@ namespace DnKR.tcLauncher
             try
             {
                 this.BackgroundImage = Image.FromFile(dialog.FileName);
-                properties.bkgPath = dialog.FileName;
+                properties.BkgPath = dialog.FileName;
             }
             catch (ArgumentException)
             {
@@ -463,7 +461,7 @@ namespace DnKR.tcLauncher
         private void btnBkgClear_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.tclaucher_bg;
-            properties.bkgPath = null;
+            properties.BkgPath = null;
         }
 
 

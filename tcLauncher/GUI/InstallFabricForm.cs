@@ -25,7 +25,9 @@ namespace DnKR.tcLauncher.GUI
             foreach (var item in versions)
             {
                 if (regex.IsMatch(item.Name))
+                {
                     cbVersion.Items.Add(item.Name);
+                }
             }
         }
 

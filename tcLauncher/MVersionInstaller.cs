@@ -6,8 +6,8 @@ namespace DnKR.tcLauncher.MVersionInstaller
 {
     public class FabricInstaller
     {
-        private MGame game;
-        private FabricVersionLoader fabricLoader;
+        private readonly MGame game;
+        private readonly FabricVersionLoader fabricLoader;
         private string loaderVersion = "0.13.3";
         
         public string LoaderVersion {
@@ -40,8 +40,8 @@ namespace DnKR.tcLauncher.MVersionInstaller
 
     public class QuiltInstaller
     {
-        MGame game;
-        QuiltVersionLoader quiltLoader;
+        readonly MGame game;
+        readonly QuiltVersionLoader quiltLoader;
 
         public QuiltInstaller(MGame game)
         {

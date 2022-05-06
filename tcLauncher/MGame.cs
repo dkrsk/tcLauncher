@@ -79,7 +79,7 @@ namespace DnKR.tcLauncher
         {
         }
         
-        public async void StartGame()
+        public async Task StartGame()
         {
             if (!string.IsNullOrWhiteSpace(GameVersion))
             {

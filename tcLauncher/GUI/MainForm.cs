@@ -6,7 +6,6 @@ using DnKR.tcLauncher.tcUpdater;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Collections.Concurrent;
-using System.Windows.Forms;
 
 
 namespace DnKR.tcLauncher.GUI
@@ -39,7 +38,6 @@ namespace DnKR.tcLauncher.GUI
 
         readonly UpdaterConfig updaterConfig = config.GetUpdConfig();
 
-
         readonly static ConcurrentQueue<string> logQueue = new ConcurrentQueue<string>();
 
         readonly MinecraftPath gamePath;
@@ -47,7 +45,9 @@ namespace DnKR.tcLauncher.GUI
         private async void MainForm_Shown(object sender, EventArgs e)
         {
             if (properties.BkgPath != null && File.Exists(properties.BkgPath))
+            {
                 this.BackgroundImage = Image.FromFile(properties.BkgPath);
+            }
 
             await UpdateModpack(true);
 
@@ -65,7 +65,7 @@ namespace DnKR.tcLauncher.GUI
 
             var versions = Directory.EnumerateDirectories(gamePath.Versions);
 
-            if (!versions.Any()) return;
+            if (!versions.Any()) { return; };
 
             foreach (string ver in versions)
             {
@@ -75,9 +75,13 @@ namespace DnKR.tcLauncher.GUI
                 cbVersions.Items.Add(verName);
             }
             if (string.IsNullOrWhiteSpace(properties.LatestVersion))
+            {
                 cbVersions.Text = cbVersions.Items[^1].ToString();
+            }
             else
+            {
                 cbVersions.Text = properties.LatestVersion;
+            }
         }
 
         private async void btnLaunch_Click(object sender, EventArgs e)
@@ -105,13 +109,6 @@ namespace DnKR.tcLauncher.GUI
                 {
                     game.UserName = txbNicknameEnter.Text;
                 }
-                //this.session = MSession.GetOfflineSession(txbNicknameEnter.Text);
-
-                //MLaunchOption launchOption = new MLaunchOption
-                //{
-                //    Session = this.session,
-                //    FullScreen = false
-                //};
 
                 if (File.Exists(txbJavaPath.Text))
                 {
@@ -129,9 +126,9 @@ namespace DnKR.tcLauncher.GUI
                 }
 
                 if (!string.IsNullOrWhiteSpace(txbRam.Text))
+                {
                     game.launchOption.MaximumRamMb = int.Parse(txbRam.Text);
-
-                //var process = await launcher.CreateProcessAsync(cbVersions.Text, launchOption);
+                }
 
                 UpdateProperties();
 
@@ -253,9 +250,9 @@ namespace DnKR.tcLauncher.GUI
             {
                 txbJavaPath.Text = dialog.FileName;
             }
-            catch (ArgumentException)
+            catch (ArgumentException e)
             {
-
+                MessageBox.Show(e.ToString());
             }
             
         }
@@ -365,7 +362,7 @@ namespace DnKR.tcLauncher.GUI
             UpdateStateHandler(message, true);
         }
 
-        public async void UpdateProperties()
+        public async Task UpdateProperties()
         {
             properties.JavaPath = txbJavaPath.Text;
             properties.Ram = txbRam.Text;

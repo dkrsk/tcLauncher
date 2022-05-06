@@ -21,7 +21,6 @@ namespace DnKR.tcLauncher.GUI
         {
             cbVersion.Items.Clear();
 
-            //quiltLoader.LoaderVersion = "0.13.3";
             //0.16.0-beta.8
             var versions = await quiltInstaller.GetQuiltMetadatas();
             Regex regex = new Regex(@"\d\.\d\d\.\d$");
@@ -29,7 +28,9 @@ namespace DnKR.tcLauncher.GUI
             foreach (var item in versions)
             {
                 if (regex.IsMatch(item.Name))
+                {
                     cbVersion.Items.Add(item.Name);
+                }
             }
         }
 

@@ -1,8 +1,8 @@
-﻿using DnKR.mineUpdater;
+﻿using DnKR.tcLauncher.tcUpdater;
 
 namespace DnKR.tcLauncher
 {
-    internal class config
+    internal static class config
     {
         public static UpdaterConfig GetUpdConfig()
         {

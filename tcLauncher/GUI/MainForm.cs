@@ -1,5 +1,4 @@
 ﻿using CmlLib.Core;
-using CmlLib.Core.Auth;
 using CmlLib.Core.Downloader;
 
 using DnKR.tcLauncher.tcUpdater;
@@ -7,9 +6,10 @@ using DnKR.tcLauncher.tcUpdater;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Collections.Concurrent;
+using System.Windows.Forms;
 
 
-namespace DnKR.tcLauncher
+namespace DnKR.tcLauncher.GUI
 {
     public partial class MainForm : Form
     {
@@ -18,6 +18,14 @@ namespace DnKR.tcLauncher
             properties = new();
             new Task(async () => await properties.JsonRead()).Start();
 
+            game = new();
+            game.OutputRecieved += Process_OutputDataReceived;
+            game.ProcessExited += Process_Exited;
+            game.ProgressChanged += Launcher_ProgressChanged;
+            game.FileChanged += Launcher_FileChanged;
+
+            this.gamePath = game.GamePath;
+
             this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             this.SetStyle(ControlStyles.UserPaint, true);
@@ -25,49 +33,38 @@ namespace DnKR.tcLauncher
             InitializeComponent();
         }
 
-        MSession session;
-        CMLauncher launcher;
+        readonly MGame game;
 
-        UserProperties properties;
+        readonly UserProperties properties;
 
-        UpdaterConfig updaterConfig = config.GetUpdConfig();
+        readonly UpdaterConfig updaterConfig = config.GetUpdConfig();
 
 
-        static ConcurrentQueue<string> logQueue = new ConcurrentQueue<string>();
+        readonly static ConcurrentQueue<string> logQueue = new ConcurrentQueue<string>();
 
-        public static MinecraftPath gamePath = new MinecraftPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.tclaucner");
-
+        readonly MinecraftPath gamePath;
 
         private async void MainForm_Shown(object sender, EventArgs e)
         {
-
             if (properties.BkgPath != null && File.Exists(properties.BkgPath))
                 this.BackgroundImage = Image.FromFile(properties.BkgPath);
 
-            this.launcher = new CMLauncher(gamePath);
-            launcher.FileChanged += Launcher_FileChanged;
-            launcher.ProgressChanged += Launcher_ProgressChanged;
-            System.Net.ServicePointManager.DefaultConnectionLimit = 256;
-            launcher.FileDownloader = new AsyncParallelDownloader();
-
             await UpdateModpack(true);
-            //new Thread(() => updateThread(true)).Start();
-
 
             txbNicknameEnter.Text = properties.Nickname;
             txbJavaPath.Text = properties.JavaPath;
             txbJavaArg.Text = properties.JavaArgs;
             txbRam.Text = properties.Ram;
 
-            await refreshVersions();
-
+            RefreshVersions();
         }
 
-        private async Task refreshVersions()
+        private void RefreshVersions()
         {
             cbVersions.Items.Clear();
 
             var versions = Directory.EnumerateDirectories(gamePath.Versions);
+
             if (!versions.Any()) return;
 
             foreach (string ver in versions)
@@ -85,34 +82,41 @@ namespace DnKR.tcLauncher
 
         private async void btnLaunch_Click(object sender, EventArgs e)
         {
-
-            if (string.IsNullOrWhiteSpace(txbNicknameEnter.Text))
-            {
-                MessageBox.Show("Enter the nickname first!");
-                return;
-            }
-            this.session = MSession.GetOfflineSession(txbNicknameEnter.Text);
-
-            if (cbVersions.Text == "")
-            {
-                MessageBox.Show("Select the version first!");
-                return;
-            }
-
-
             setUiEnabled(false);
 
             try
             {
-
-                MLaunchOption launchOption = new MLaunchOption
+                if (cbVersions.Text == "")
                 {
-                    Session = this.session,
-                    FullScreen = false
-                };
+                    MessageBox.Show("Select the version first!");
+                    return;
+                }
+                else
+                {
+                    game.GameVersion = cbVersions.Text;
+                }
+
+                if (string.IsNullOrWhiteSpace(txbNicknameEnter.Text))
+                {
+                    MessageBox.Show("Enter the nickname first!");
+                    return;
+                }
+                else
+                {
+                    game.UserName = txbNicknameEnter.Text;
+                }
+                //this.session = MSession.GetOfflineSession(txbNicknameEnter.Text);
+
+                //MLaunchOption launchOption = new MLaunchOption
+                //{
+                //    Session = this.session,
+                //    FullScreen = false
+                //};
 
                 if (File.Exists(txbJavaPath.Text))
-                    launchOption.JavaPath = txbJavaPath.Text;
+                {
+                    game.launchOption.JavaPath = txbJavaPath.Text;
+                }
                 else if (!string.IsNullOrWhiteSpace(txbJavaPath.Text))
                 {
                     MessageBox.Show("Incorrent location to java");
@@ -121,13 +125,13 @@ namespace DnKR.tcLauncher
 
                 if (!string.IsNullOrWhiteSpace(txbJavaArg.Text))
                 {
-                    launchOption.JVMArguments = txbJavaArg.Text.Split(' ');
+                    game.launchOption.JVMArguments = txbJavaArg.Text.Split(' ');
                 }
 
                 if (!string.IsNullOrWhiteSpace(txbRam.Text))
-                    launchOption.MaximumRamMb = int.Parse(txbRam.Text);
+                    game.launchOption.MaximumRamMb = int.Parse(txbRam.Text);
 
-                var process = await launcher.CreateProcessAsync(cbVersions.Text, launchOption);
+                //var process = await launcher.CreateProcessAsync(cbVersions.Text, launchOption);
 
                 UpdateProperties();
 
@@ -137,7 +141,8 @@ namespace DnKR.tcLauncher
                 File.Delete(Path.Combine(gamePath.ToString(), "\\logs.txt"));
                 tmLog.Enabled = true;
 
-                StartProcess(process);
+
+                game.StartGame();
             }
 
             catch (Win32Exception wex) // java exception
@@ -164,23 +169,6 @@ namespace DnKR.tcLauncher
         {
             groupMain.Enabled = value;
             groupSettings.Enabled = value;
-        }
-
-        private void StartProcess(Process process)
-        {
-            Output(process.StartInfo.Arguments);
-
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.EnableRaisingEvents = true;
-            process.ErrorDataReceived += Process_ErrorDataReceived;
-            process.OutputDataReceived += Process_OutputDataReceived;
-            process.Exited += Process_Exited;
-
-            process.Start();
-            process.BeginErrorReadLine();
-            process.BeginOutputReadLine();
         }
 
         private void Process_Exited(object? sender, EventArgs e)
@@ -228,8 +216,8 @@ namespace DnKR.tcLauncher
         private void btnInstallVanilla_Click(object sender, EventArgs e)
         {
             setUiEnabled(false);
-            Form form = new InstallVanillaForm(launcher);
-            form.FormClosing += async delegate { setUiEnabled(true); await refreshVersions(); };
+            Form form = new InstallVanillaForm(game);
+            form.FormClosing += delegate { setUiEnabled(true); RefreshVersions(); };
             form.Show();
 
         }
@@ -237,8 +225,8 @@ namespace DnKR.tcLauncher
         private async void btnInstallFabric_Click(object sender, EventArgs e)
         {
             setUiEnabled(false);
-            InstallFabricForm form = new(launcher);
-            form.FormClosing += async delegate { setUiEnabled(true); await refreshVersions(); };
+            InstallFabricForm form = new(game);
+            form.FormClosing += delegate { setUiEnabled(true); RefreshVersions(); };
             form.Show();
 
         }
@@ -246,8 +234,8 @@ namespace DnKR.tcLauncher
         private void btnInstallQuilt_Click(object sender, EventArgs e)
         {
             setUiEnabled(false);
-            InstallQuiltForm form = new(launcher);
-            form.FormClosing += async delegate { setUiEnabled(true); await refreshVersions(); };
+            InstallQuiltForm form = new(game);
+            form.FormClosing += delegate { setUiEnabled(true); RefreshVersions(); };
             form.Show();
         }
 
@@ -272,31 +260,37 @@ namespace DnKR.tcLauncher
             
         }
 
-        private readonly int uiThreadId = Thread.CurrentThread.ManagedThreadId;
         private void Launcher_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (Thread.CurrentThread.ManagedThreadId != uiThreadId)
+            if (e.ProgressPercentage == 100)
             {
-                Debug.WriteLine(e);
+                Pb_Progress.Value = 0;
+                Lv_Status.Text = "Ready";
             }
-            Pb_Progress.Maximum = 100;
-            Pb_Progress.Value = e.ProgressPercentage;
+            else
+            {
+                Pb_Progress.Maximum = 100;
+                Pb_Progress.Value = e.ProgressPercentage;
+            }
         }
 
         private void Launcher_FileChanged(DownloadFileChangedEventArgs e)
         {
-            if (Thread.CurrentThread.ManagedThreadId != uiThreadId)
+            if (e.ProgressedFileCount == 100)
             {
-                Debug.WriteLine(e);
+                Pb_File.Value = 0;
+                Lv_Status.Text = "Ready";
             }
-            Pb_File.Maximum = e.TotalFileCount;
-            Pb_File.Value = e.ProgressedFileCount;
-            Lv_Status.Text = $"{e.FileKind} : {e.FileName} ({e.ProgressedFileCount}/{e.TotalFileCount})";
+            else
+            {
+                Pb_File.Maximum = e.TotalFileCount;
+                Pb_File.Value = e.ProgressedFileCount;
+                Lv_Status.Text = $"{e.FileKind} : {e.FileName} ({e.ProgressedFileCount}/{e.TotalFileCount})";
+            }
         }
 
         private async void btnUpdatePack_Click(object? sender, EventArgs? e)
         {
-            //new Thread(() => updateThread(false)).Start();
             await UpdateModpack(false);
         }
 
@@ -357,7 +351,7 @@ namespace DnKR.tcLauncher
 
         }
 
-        private void UpdateStateHandler(string message, bool uiState = true)
+        private void UpdateStateHandler(string message, bool uiState)
         {
             this.Invoke((MethodInvoker)delegate
             {
@@ -365,6 +359,12 @@ namespace DnKR.tcLauncher
                 setUiEnabled(uiState);
             });
         }
+
+        private void UpdateStateHandler(string message)
+        {
+            UpdateStateHandler(message, true);
+        }
+
         public async void UpdateProperties()
         {
             properties.JavaPath = txbJavaPath.Text;

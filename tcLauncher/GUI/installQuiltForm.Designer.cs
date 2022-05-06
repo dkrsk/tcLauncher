@@ -1,6 +1,6 @@
-﻿namespace DnKR.tcLauncher
+﻿namespace DnKR.tcLauncher.GUI
 {
-    partial class InstallVanillaForm
+    partial class InstallQuiltForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InstallVanillaForm));
             this.lblVersion = new System.Windows.Forms.Label();
             this.cbVersion = new System.Windows.Forms.ComboBox();
             this.btnInstall = new System.Windows.Forms.Button();
@@ -69,7 +68,7 @@
             this.pb_Progress.Size = new System.Drawing.Size(201, 10);
             this.pb_Progress.TabIndex = 3;
             // 
-            // InstallVanillaForm
+            // InstallQuiltForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -79,12 +78,11 @@
             this.Controls.Add(this.cbVersion);
             this.Controls.Add(this.lblVersion);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "InstallVanillaForm";
+            this.Name = "InstallQuiltForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Install vanilla version";
-            this.Shown += new System.EventHandler(this.InstallVanillaForm_Shown);
+            this.Text = "Install Fabric version";
+            this.Shown += new System.EventHandler(this.InstallFabricForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

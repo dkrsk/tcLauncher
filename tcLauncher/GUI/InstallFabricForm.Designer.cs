@@ -1,4 +1,4 @@
-﻿namespace DnKR.tcLauncher
+﻿namespace DnKR.tcLauncher.GUI
 {
     partial class InstallFabricForm
     {

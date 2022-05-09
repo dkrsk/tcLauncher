@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 
 
@@ -11,7 +12,7 @@ namespace DnKR.tcLauncher.tcUpdater
     public delegate void StateChanged(string message, bool uiState);
     public static class ModpackUpdater
     {
-        public static async void UpdateModpack(UpdaterConfig config, StateChanged stateChanged, bool isChecking = false)
+        public static async Task UpdateModpack(UpdaterConfig config, StateChanged stateChanged, bool isChecking)
         {
             UpdateBuilder updater = new(config);
             string gamePath = config.path;
@@ -71,10 +72,10 @@ namespace DnKR.tcLauncher.tcUpdater
 
     public class UpdaterConfig
     {
-        public readonly string path;
-        public readonly string uri;
-        public readonly string ftpPath;
-        public readonly NetworkCredential credential;
+        public string path { get; }
+        public string uri { get; }
+        public string ftpPath { get; }
+        public NetworkCredential credential { get; }
 
         public UpdaterConfig(string path, string uri, string ftpPath, NetworkCredential credential)
         {

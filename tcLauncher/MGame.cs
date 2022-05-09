@@ -71,8 +71,8 @@ namespace DnKR.tcLauncher
 
             this.UserName = null;
 
-            OutputRecieved += (msg, uis) => { return; };
-            ProcessExited += (msg, uis) => { return; };
+            OutputRecieved += (msg, uis) => { };
+            ProcessExited += (msg, uis) => { };
         }
 
         public MGame() : this(null)
@@ -104,7 +104,7 @@ namespace DnKR.tcLauncher
         }
     }
 
-    class VersionIsNullException : Exception
+    public class VersionIsNullException : Exception
     {
         public VersionIsNullException(string message)
         : base(message) { }

@@ -66,7 +66,7 @@ namespace DnKR.tcLauncher.tcUpdater
 
         public async Task<string[]> GetNamesAsync()
         {
-            return await Task.Run(() => GetNames());
+            return await Task.Run(() => GetNames()).ConfigureAwait(false);
         }
 
         public void DownloadFile(string PackageName)
@@ -99,7 +99,7 @@ namespace DnKR.tcLauncher.tcUpdater
 
         public async Task DownloadFileAsync(string PackageName)
         {
-            await Task.Run(() => DownloadFile(PackageName));
+            await Task.Run(() => DownloadFile(PackageName)).ConfigureAwait(false);
         }
 
         public void ExtractFile(string PackageName)
@@ -148,7 +148,7 @@ namespace DnKR.tcLauncher.tcUpdater
 
         public async Task ExtractFileAsync(string PackageName)
         {
-            await Task.Run(() => ExtractFile(PackageName));
+            await Task.Run(() => ExtractFile(PackageName)).ConfigureAwait(false);
         }
 
     }

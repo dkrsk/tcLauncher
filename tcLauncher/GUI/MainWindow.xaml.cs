@@ -64,7 +64,7 @@ namespace DnKR.tcLauncher.GUI
                 this.Bkg.ImageSource = new BitmapImage(new Uri(properties.BkgPath));
             }
 
-            await UpdateModpack(true);
+            await UpdateModpack(true).ConfigureAwait(false);
 
             txbNick.Text = properties.Nickname;
             txbJavaPath.Text = properties.JavaPath;
@@ -145,7 +145,7 @@ namespace DnKR.tcLauncher.GUI
                     game.launchOption.MaximumRamMb = int.Parse(txbRam.Text);
                 }
 
-                await UpdateProperties();
+                await UpdateProperties().ConfigureAwait(false);
 
                 btnLaunch.IsEnabled = false;
 
@@ -298,7 +298,7 @@ namespace DnKR.tcLauncher.GUI
             }
         }
 
-        private async void btnUpdatePack_Click(object? sender, RoutedEventArgs? e)
+        private async Task btnUpdatePack_Click(object? sender, RoutedEventArgs? e)
         {
             await UpdateModpack(false);
         }
@@ -347,7 +347,7 @@ namespace DnKR.tcLauncher.GUI
 
             try
             {
-                ModpackUpdater.UpdateModpack(updaterConfig, (msg, uis) => UpdateStateHandler(msg, uis), IsChecking);
+                await ModpackUpdater.UpdateModpack(updaterConfig, (msg, uis) => UpdateStateHandler(msg, uis), IsChecking);
             }
             catch (System.Net.WebException)
             {

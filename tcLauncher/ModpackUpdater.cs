@@ -34,7 +34,7 @@ namespace DnKR.tcLauncher.tcUpdater
             return CreateRequest("",method);
         }
 
-        public FtpWebRequest CreateRequest(string FileName, string method)
+        private FtpWebRequest CreateRequest(string FileName, string method)
         {
             FtpWebRequest rq = (FtpWebRequest)WebRequest.Create(Path.Combine(uri,ftpPath,FileName));
 

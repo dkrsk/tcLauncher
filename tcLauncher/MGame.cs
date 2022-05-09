@@ -30,13 +30,13 @@ namespace DnKR.tcLauncher
             remove { launcher.FileChanged -= value; }
         }
 
-        string userName;
-        public string UserName {
+        private string userName;
+        public string? UserName {
             get { return userName; }
 
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
+                if (!string.IsNullOrWhiteSpace(value))
                 {
                     userName = value;
                     this.launchOption.Session = MSession.GetOfflineSession(value);
@@ -49,7 +49,7 @@ namespace DnKR.tcLauncher
             }
         }
 
-        public MGame(string? nickname, string? gamePath)
+        public MGame(string? gamePath)
         {
             if (gamePath != null && gamePath.Substring(1, 2).Equals(":/"))
             {
@@ -66,16 +66,13 @@ namespace DnKR.tcLauncher
                 FullScreen = false
             };
 
-            this.UserName = nickname;
+            this.UserName = null;
 
             OutputRecieved += (msg, uis) => { return; };
             ProcessExited += (msg, uis) => { return; };
         }
-        public MGame(string? nickname) : this(nickname, null)
-        {
-        }
 
-        public MGame() : this(null, null)
+        public MGame() : this(null)
         {
         }
         

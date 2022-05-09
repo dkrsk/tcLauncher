@@ -250,9 +250,9 @@ namespace DnKR.tcLauncher.GUI
             {
                 txbJavaPath.Text = dialog.FileName;
             }
-            catch (ArgumentException e)
+            catch (ArgumentException ex)
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show(ex.ToString());
             }
             
         }

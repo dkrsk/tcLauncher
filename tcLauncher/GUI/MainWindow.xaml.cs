@@ -1,18 +1,43 @@
-﻿using CmlLib.Core;
+﻿using System;
+using System.Windows.Media.Imaging;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
+using System.Threading;
+using Microsoft.Win32;
+
+using CmlLib.Core;
 using CmlLib.Core.Downloader;
 
 using DnKR.tcLauncher.tcUpdater;
+using DnKR.tcLauncher.MVersionInstaller;
 
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Collections.Concurrent;
 
-
 namespace DnKR.tcLauncher.GUI
 {
-    public partial class MainForm : Form
+    /// <summary>
+    /// Логика взаимодействия для MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
-        public MainForm()
+        readonly MGame game;
+
+        readonly UserProperties properties;
+
+        readonly UpdaterConfig updaterConfig = config.GetUpdConfig();
+
+        readonly static ConcurrentQueue<string> logQueue = new ConcurrentQueue<string>();
+
+        readonly MinecraftPath gamePath;
+
+        readonly DispatcherTimer tmLog;
+
+        public MainWindow()
         {
             properties = new();
             new Task(async () => await properties.JsonRead()).Start();
@@ -25,35 +50,25 @@ namespace DnKR.tcLauncher.GUI
 
             this.gamePath = game.GamePath;
 
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            this.SetStyle(ControlStyles.UserPaint, true);
+            tmLog = new();
+            tmLog.Tick += tmLog_Tick;
+            tmLog.Interval = new TimeSpan(0,0,5);
 
             InitializeComponent();
         }
 
-        readonly MGame game;
-
-        readonly UserProperties properties;
-
-        readonly UpdaterConfig updaterConfig = config.GetUpdConfig();
-
-        readonly static ConcurrentQueue<string> logQueue = new ConcurrentQueue<string>();
-
-        readonly MinecraftPath gamePath;
-
-        private async void MainForm_Shown(object sender, EventArgs e)
+        private async void Window_Initialized(object sender, EventArgs e)
         {
             if (properties.BkgPath != null && File.Exists(properties.BkgPath))
             {
-                this.BackgroundImage = Image.FromFile(properties.BkgPath);
+                this.Bkg.ImageSource = new BitmapImage(new Uri(properties.BkgPath));
             }
 
             await UpdateModpack(true);
 
-            txbNicknameEnter.Text = properties.Nickname;
+            txbNick.Text = properties.Nickname;
             txbJavaPath.Text = properties.JavaPath;
-            txbJavaArg.Text = properties.JavaArgs;
+            txbJavaArgs.Text = properties.JavaArgs;
             txbRam.Text = properties.Ram;
 
             RefreshVersions();
@@ -84,7 +99,7 @@ namespace DnKR.tcLauncher.GUI
             }
         }
 
-        private async void btnLaunch_Click(object sender, EventArgs e)
+        private async void btnLaunch_Click(object sender, RoutedEventArgs e)
         {
             setUiEnabled(false);
 
@@ -100,14 +115,14 @@ namespace DnKR.tcLauncher.GUI
                     game.GameVersion = cbVersions.Text;
                 }
 
-                if (string.IsNullOrWhiteSpace(txbNicknameEnter.Text))
+                if (string.IsNullOrWhiteSpace(txbNick.Text))
                 {
                     MessageBox.Show("Enter the nickname first!");
                     return;
                 }
                 else
                 {
-                    game.UserName = txbNicknameEnter.Text;
+                    game.UserName = txbNick.Text;
                 }
 
                 if (File.Exists(txbJavaPath.Text))
@@ -120,9 +135,9 @@ namespace DnKR.tcLauncher.GUI
                     return;
                 }
 
-                if (!string.IsNullOrWhiteSpace(txbJavaArg.Text))
+                if (!string.IsNullOrWhiteSpace(txbJavaArgs.Text))
                 {
-                    game.launchOption.JVMArguments = txbJavaArg.Text.Split(' ');
+                    game.launchOption.JVMArguments = txbJavaArgs.Text.Split(' ');
                 }
 
                 if (!string.IsNullOrWhiteSpace(txbRam.Text))
@@ -130,16 +145,17 @@ namespace DnKR.tcLauncher.GUI
                     game.launchOption.MaximumRamMb = int.Parse(txbRam.Text);
                 }
 
-                UpdateProperties();
+                await UpdateProperties();
 
-                Lv_Status.Text = "Playing...";
-                btnLaunch.Enabled = false;
+                btnLaunch.IsEnabled = false;
 
                 File.Delete(Path.Combine(gamePath.ToString(), "\\logs.txt"));
-                tmLog.Enabled = true;
+                tmLog.Start();
 
 
-                game.StartGame();
+                await game.StartGame();
+
+                Lv_Status.Content = "Playing...";
             }
 
             catch (Win32Exception wex) // java exception
@@ -148,8 +164,8 @@ namespace DnKR.tcLauncher.GUI
             }
             catch (Exception ex) // all exception
             {
-                Lv_Status.Text = "Ready";
-                btnLaunch.Enabled = true;
+                Lv_Status.Content = "Ready";
+                btnLaunch.IsEnabled = true;
                 MessageBox.Show(ex.ToString());
             }
             finally
@@ -158,26 +174,24 @@ namespace DnKR.tcLauncher.GUI
                 Pb_File.Value = 0;
 
                 setUiEnabled(true);
-                
+
             }
         }
 
         private void setUiEnabled(bool value)
         {
-            groupMain.Enabled = value;
-            groupSettings.Enabled = value;
+            groupMain.IsEnabled = value;
+            groupSettings.IsEnabled = value;
         }
 
         private void Process_Exited(object? sender, EventArgs e)
         {
-            tmLog.Enabled = false;
+            tmLog.Stop();
 
-            Lv_Status.Invoke((MethodInvoker)delegate {
-                Lv_Status.Text = "Ready";
-            });
-
-            btnLaunch.Invoke((MethodInvoker)delegate {
-                btnLaunch.Enabled = true;
+            Dispatcher.Invoke(() =>
+            {
+                Lv_Status.Content = "Ready";
+                btnLaunch.IsEnabled = true;
             });
         }
 
@@ -204,39 +218,37 @@ namespace DnKR.tcLauncher.GUI
                 File.AppendAllText(gamePath.ToString() + "\\logs.txt", msg + '\n');
             }
         }
-
-        private void txbRam_KeyPress(object sender, KeyPressEventArgs e)
+        private void txbRam_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+            e.Handled = !char.IsDigit((char)e.Key) && !char.IsControl((char)e.Key);
         }
 
-        private void btnInstallVanilla_Click(object sender, EventArgs e)
-        {
-            setUiEnabled(false);
-            Form form = new InstallVanillaForm(game);
-            form.FormClosing += delegate { setUiEnabled(true); RefreshVersions(); };
-            form.Show();
-
-        }
-
-        private async void btnInstallFabric_Click(object sender, EventArgs e)
+        private void btnInstallVanilla_Click(object sender, RoutedEventArgs e)
         {
             setUiEnabled(false);
-            InstallFabricForm form = new(game);
-            form.FormClosing += delegate { setUiEnabled(true); RefreshVersions(); };
-            form.Show();
+            Window window = new InstallerWindow(new VanillaInstaller(game));
+            window.Closing += delegate { setUiEnabled(true); RefreshVersions(); };
+            window.Show();
 
         }
 
-        private void btnInstallQuilt_Click(object sender, EventArgs e)
+        private async void btnInstallFabric_Click(object sender, RoutedEventArgs e)
         {
             setUiEnabled(false);
-            InstallQuiltForm form = new(game);
-            form.FormClosing += delegate { setUiEnabled(true); RefreshVersions(); };
-            form.Show();
+            Window window = new InstallerWindow(new FabricInstaller(game));
+            window.Closing += delegate { setUiEnabled(true); RefreshVersions(); };
+            window.Show();
         }
 
-        private void btnJavaChange_Click(object sender, EventArgs e)
+        private void btnInstallQuilt_Click(object sender, RoutedEventArgs e)
+        {
+            setUiEnabled(false);
+            Window window = new InstallerWindow(new QuiltInstaller(game));
+            window.Closing += delegate { setUiEnabled(true); RefreshVersions(); };
+            window.Show();
+        }
+
+        private void btnJavaChange_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.InitialDirectory = "C:\\Program Files";
@@ -254,7 +266,7 @@ namespace DnKR.tcLauncher.GUI
             {
                 MessageBox.Show(ex.ToString());
             }
-            
+
         }
 
         private void Launcher_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -262,7 +274,7 @@ namespace DnKR.tcLauncher.GUI
             if (e.ProgressPercentage == 100)
             {
                 Pb_Progress.Value = 0;
-                Lv_Status.Text = "Ready";
+                Lv_Status.Content = "Ready";
             }
             else
             {
@@ -276,27 +288,27 @@ namespace DnKR.tcLauncher.GUI
             if (e.ProgressedFileCount == 100)
             {
                 Pb_File.Value = 0;
-                Lv_Status.Text = "Ready";
+                Lv_Status.Content = "Ready";
             }
             else
             {
                 Pb_File.Maximum = e.TotalFileCount;
                 Pb_File.Value = e.ProgressedFileCount;
-                Lv_Status.Text = $"{e.FileKind} : {e.FileName} ({e.ProgressedFileCount}/{e.TotalFileCount})";
+                Lv_Status.Content = $"{e.FileKind} : {e.FileName} ({e.ProgressedFileCount}/{e.TotalFileCount})";
             }
         }
 
-        private async void btnUpdatePack_Click(object? sender, EventArgs? e)
+        private async void btnUpdatePack_Click(object? sender, RoutedEventArgs? e)
         {
             await UpdateModpack(false);
         }
 
-        private void btnLocaleFiles_Click(object sender, EventArgs e)
+        private void btnLocaleFiles_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("explorer.exe", gamePath.ToString());
         }
 
-        private void btnBkg_Click(object sender, EventArgs e)
+        private void btnBkg_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.InitialDirectory = Environment.GetEnvironmentVariable("USERPROFILE"); ;
@@ -308,19 +320,22 @@ namespace DnKR.tcLauncher.GUI
 
             try
             {
-                this.BackgroundImage = Image.FromFile(dialog.FileName);
-                properties.BkgPath = dialog.FileName;
+                if (File.Exists(dialog.FileName))
+                {
+                    this.Bkg.ImageSource = new BitmapImage(new Uri(dialog.FileName));
+                    properties.BkgPath = dialog.FileName;
+                }
             }
             catch (ArgumentException)
             {
-                
+
             }
 
         }
 
-        private void btnBkgClear_Click(object sender, EventArgs e)
+        private void btnBkgClear_Click(object sender, RoutedEventArgs e)
         {
-            this.BackgroundImage = Properties.Resources.tclaucher_bg;
+            this.Bkg.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/tclaucher-bg.png"));
             properties.BkgPath = string.Empty;
         }
 
@@ -328,7 +343,7 @@ namespace DnKR.tcLauncher.GUI
         {
             Thread.CurrentThread.IsBackground = true;
 
-            UpdateStateHandler(lblUpdate.Text, false);
+            UpdateStateHandler(lblUpdate.Content.ToString(), false);
 
             try
             {
@@ -344,17 +359,14 @@ namespace DnKR.tcLauncher.GUI
                 UpdateStateHandler("It seems something\nis broken...");
             }
 
-            UpdateStateHandler(lblUpdate.Text);
+            UpdateStateHandler(lblUpdate.Content.ToString());
 
         }
 
         private void UpdateStateHandler(string message, bool uiState)
         {
-            this.Invoke((MethodInvoker)delegate
-            {
-                lblUpdate.Text = message;
-                setUiEnabled(uiState);
-            });
+            lblUpdate.Content = message;
+            setUiEnabled(uiState);
         }
 
         private void UpdateStateHandler(string message)
@@ -367,16 +379,15 @@ namespace DnKR.tcLauncher.GUI
             properties.JavaPath = txbJavaPath.Text;
             properties.Ram = txbRam.Text;
             properties.LatestVersion = cbVersions.Text;
-            properties.Nickname = txbNicknameEnter.Text;
-            properties.JavaArgs = txbJavaArg.Text;
+            properties.Nickname = txbNick.Text;
+            properties.JavaArgs = txbJavaArgs.Text;
 
             await properties.JsonWrite();
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
             UpdateProperties();
         }
     }
 }
-

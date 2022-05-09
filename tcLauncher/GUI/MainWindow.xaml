@@ -1,0 +1,89 @@
+﻿<Window x:Class="DnKR.tcLauncher.GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DnKR.tcLauncher.GUI"
+        mc:Ignorable="d"
+        Title="tcLauncher" Height="480" Width="768" ResizeMode="CanMinimize" Icon="/Resources/tclauncher-ico.ico" Closing="Window_Closing" Initialized="Window_Initialized" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GUI/ResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid x:Name="MainGrid">
+        <Grid.Background>
+            <ImageBrush x:Name="Bkg" Stretch="UniformToFill" ImageSource="/Resources/tclaucher-bg.png"/>
+        </Grid.Background>
+
+
+        <GroupBox Style="{DynamicResource GroupBoxStyle1}" x:Name="groupMain" Width="200" Height="256" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="155,95,0,0" BorderBrush="Black" BorderThickness="1,1,1,1">
+            <GroupBox.Background>
+                <SolidColorBrush Color="White" Opacity="0.8"/>
+            </GroupBox.Background>
+
+            <Grid>
+                <Label x:Name="lblBrand" Content="teacup Launcher" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Top" FontSize="10"/>
+
+                <Label x:Name="lblNick" Content="Nick: " HorizontalAlignment="Left" Margin="0,16,0,0" VerticalAlignment="Top"/>
+                <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="txbNick" HorizontalAlignment="Right" Margin="0,20,4,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" Height="20"/>
+
+                <ComboBox x:Name="cbVersions" HorizontalAlignment="Center" Margin="0,65,0,0" VerticalAlignment="Top" Width="180" Height="22" BorderBrush="White">
+                    <ComboBox.Background>
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Color="#FFF0F0F0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ComboBox.Background>
+                </ComboBox>
+
+                <Button Style="{DynamicResource ButtonStyle1}" x:Name="btnLaunch" Content="Launch!" HorizontalAlignment="Left" Margin="4,130,0,0" VerticalAlignment="Top" Width="136" Height="20" Click="btnLaunch_Click"/>
+                <Button x:Name="btnLocaleFiles" HorizontalAlignment="Right" Margin="0,130,4,0" VerticalAlignment="Top" Width="40" Height="20" Style="{DynamicResource ButtonStyle1}" Click="btnLocaleFiles_Click">
+                    <Image Source="/Resources/dirIco.png" Width="25" Stretch="Fill"/>
+                </Button>
+
+                <Label x:Name="Lv_Status" Content="Ready" HorizontalAlignment="Left" Margin="0,0,0,50" VerticalAlignment="Bottom"/>
+                <ProgressBar x:Name="Pb_Progress" HorizontalAlignment="Left" Height="25" Margin="4,0,0,20" VerticalAlignment="Bottom" Width="180"/>
+                <ProgressBar x:Name="Pb_File" HorizontalAlignment="Center" Height="11" Margin="0,0,0,34" VerticalAlignment="Bottom" Width="180"/>
+
+            </Grid>
+        </GroupBox>
+
+        <GroupBox x:Name="groupSettings" Width="320" Height="400" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0" Style="{DynamicResource GroupBoxStyle1}" BorderBrush="Black">
+            <GroupBox.Background>
+                <SolidColorBrush Color="White" Opacity="0.8"/>
+            </GroupBox.Background>
+
+            <Grid>
+                <Label x:Name="lblJavaText" Content="Java Path:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,14,0,0" Height="26"/>
+                <TextBox x:Name="txbJavaPath" Height="20" Width="230" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,16,4,0" Style="{DynamicResource TextBoxStyle1}" Text=""/>
+                <Button x:Name="btnJavaChange" Height="20" Width="90" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,42,4,0" Style="{DynamicResource ButtonStyle1}" Content="Change" Click="btnJavaChange_Click"/>
+
+                <Label x:Name="lblJavaArgs" Content="Java Args:" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,90,0,0"/>
+                <TextBox x:Name="txbJavaArgs" Height="20" Width="230" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,94,4,0" Style="{DynamicResource TextBoxStyle1}"/>
+
+                <Label x:Name="lblRam" Height="26" Content="RAM (mb):" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="4,166,0,0"/>
+                <TextBox x:Name="txbRam" Height="20" Width="175" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,169,4,0" Style="{DynamicResource TextBoxStyle1}" KeyUp="txbRam_KeyUp"/>
+
+                <Button x:Name="btnUpdatePack" Height="20" Width="110" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="9,0,0,14" Content="Update modpack" Style="{DynamicResource ButtonStyle1}" Click="btnUpdatePack_Click"/>
+                <Label x:Name="lblUpdate" Height="52" VerticalAlignment="Bottom" HorizontalAlignment="Left" Content="Updating..." Margin="4,0,0,40" Width="180" VerticalContentAlignment="Bottom" Padding="5,5,5,5"/>
+
+                <Button x:Name="btnInstallVanilla" Height="20" Width="110" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,4,14" Content="Install Vanilla" Style="{DynamicResource ButtonStyle1}" Click="btnInstallVanilla_Click"/>
+                <Button x:Name="btnInstallFabric" Height="20" Width="110" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,4,40" Content="Install Fabric" Style="{DynamicResource ButtonStyle1}" Click="btnInstallFabric_Click"/>
+                <Button x:Name="btnInstallQuilt" Height="20" Width="110" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,4,66" Content="Install Quilt" Style="{DynamicResource ButtonStyle1}" Click="btnInstallQuilt_Click"/>
+
+            </Grid>
+        </GroupBox>
+
+        <Button x:Name="btnBkg" Width="30" Height="30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,10" Style="{DynamicResource ButtonStyle1}" Opacity="0.7" Click="btnBkg_Click">
+            <Image Source="/Resources/bkgIco.png" Width="25" Stretch="Fill"/>
+        </Button>
+        <Button x:Name="btnBkgClear" Width="12" Height="18" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="45,0,0,19" Content="X" Foreground="Red" Background="{x:Null}" BorderBrush="{x:Null}" Click="btnBkgClear_Click">
+            <!--<Label Content="X" Foreground="Red" FontSize="2"/>-->
+        </Button>
+
+    </Grid>
+</Window>

@@ -1,10 +1,20 @@
-﻿using CmlLib.Core.Version;
+﻿using System.Threading.Tasks;
+using System;
+
+using CmlLib.Core.Version;
 using CmlLib.Core.Installer.FabricMC;
 using CmlLib.Core.Installer.QuiltMC;
 
 namespace DnKR.tcLauncher.MVersionInstaller
 {
-    public class FabricInstaller
+    public interface IVersionInstaller
+    {
+        Task<MVersionCollection> GetVersionMetadatas() { throw new NotImplementedException(); }
+
+        Task InstallVersion(string version) { throw new NotImplementedException(); }
+    }
+
+    public class FabricInstaller : IVersionInstaller
     {
         private readonly MGame game;
         private readonly FabricVersionLoader fabricLoader;
@@ -22,12 +32,12 @@ namespace DnKR.tcLauncher.MVersionInstaller
             this.fabricLoader.LoaderVersion = loaderVersion;
         }
 
-        public async Task<MVersionCollection> GetFabricMetadatas()
+        public async Task<MVersionCollection> GetVersionMetadatas()
         {
             return await fabricLoader.GetVersionMetadatasAsync();
         }
 
-        public async Task InstallFabric(string version)
+        public async Task InstallVersion(string version)
         {
             MVersionCollection versions = await fabricLoader.GetVersionMetadatasAsync();
 
@@ -38,7 +48,7 @@ namespace DnKR.tcLauncher.MVersionInstaller
         }
     }
 
-    public class QuiltInstaller
+    public class QuiltInstaller : IVersionInstaller
     {
         readonly MGame game;
         readonly QuiltVersionLoader quiltLoader;
@@ -50,12 +60,12 @@ namespace DnKR.tcLauncher.MVersionInstaller
             this.quiltLoader = new QuiltVersionLoader();
         }
 
-        public async Task<MVersionCollection> GetQuiltMetadatas()
+        public async Task<MVersionCollection> GetVersionMetadatas()
         {
             return await quiltLoader.GetVersionMetadatasAsync();
         }
 
-        public async Task InstallQuilt(string version)
+        public async Task InstallVersion(string version)
         {
             MVersionCollection versions = await quiltLoader.GetVersionMetadatasAsync();
 
@@ -66,7 +76,7 @@ namespace DnKR.tcLauncher.MVersionInstaller
         }
     }
 
-    public class VanillaInstaller
+    public class VanillaInstaller : IVersionInstaller
     {
         MGame game;
 
@@ -75,12 +85,12 @@ namespace DnKR.tcLauncher.MVersionInstaller
             this.game = game;
         }
 
-        public async Task<MVersionCollection> GetVanillaVersions()
+        public async Task<MVersionCollection> GetVersionMetadatas()
         {
             return await game.launcher.GetAllVersionsAsync();
         }
 
-        public async Task InstallVanilla(string version)
+        public async Task InstallVersion(string version)
         {
             await game.launcher.CheckAndDownloadAsync(await game.launcher.GetVersionAsync(version));
         }

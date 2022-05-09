@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using System.ComponentModel;
+using System;
+using System.Threading.Tasks;
 
 using CmlLib.Core;
 using CmlLib.Core.Auth;
@@ -31,7 +33,8 @@ namespace DnKR.tcLauncher
         }
 
         private string userName;
-        public string? UserName {
+        public string? UserName
+        {
             get { return userName; }
 
             set
@@ -75,7 +78,7 @@ namespace DnKR.tcLauncher
         public MGame() : this(null)
         {
         }
-        
+
         public async Task StartGame()
         {
             if (!string.IsNullOrWhiteSpace(GameVersion))

@@ -2,27 +2,28 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.20348.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
     <RootNamespace>DnKR.tcLauncher</RootNamespace>
-    <Version>1.0.5</Version>
-    <Company>dkrsk</Company>
-    <ApplicationIcon>tclauncher-ico.ico</ApplicationIcon>
-    <Piblisher>"CN=Damian Korsakov"</Piblisher>
+    <ApplicationIcon>Resources\tclauncher-ico.ico</ApplicationIcon>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>C:\Users\wilep\source\tcl.snk</AssemblyOriginatorKeyFile>
-    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <Version>1.1.0</Version>
+    <Piblisher>"CN=Damian Korsakov"</Piblisher>
+    <Company>dkrsk</Company>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="tclauncher-ico.ico" />
+    <None Remove="Resources\bkgIco.png" />
+    <None Remove="Resources\dirIco.png" />
+    <None Remove="Resources\tclaucher-bg.png" />
+    <None Remove="Resources\tclauncher-ico.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" />
-    <PackageReference Include="Fody" Version="6.6.0">
+    <PackageReference Include="Fody" Version="6.6.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -38,18 +39,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
+    <Resource Include="Resources\bkgIco.png" />
+    <Resource Include="Resources\dirIco.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Resource Include="Resources\tclaucher-bg.png" />
+    <Resource Include="Resources\tclauncher-ico.ico" />
   </ItemGroup>
 
 </Project>

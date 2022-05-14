@@ -18,7 +18,7 @@ namespace DnKR.tcLauncher.MVersionInstaller
     {
         private readonly MGame game;
         private readonly FabricVersionLoader fabricLoader;
-        private string loaderVersion = "0.13.3";
+        private string loaderVersion = "0.14.5";
         
         public string LoaderVersion {
             get { return loaderVersion; }

@@ -23,12 +23,9 @@ namespace DnKR.tcLauncher.tcUpdater
             this.credentials = credentials;
         }
 
-        public UpdateBuilder(UpdaterConfig config)
+        public UpdateBuilder(UpdaterConfig config) : this(config.path, config.uri, config.ftpPath, config.credential)
         {
-            this.path = Path.GetFullPath(config.path);
-            this.uri = config.uri;
-            this.ftpPath = config.ftpPath;
-            this.credentials = config.credential;
+
         }
 
         private FtpWebRequest CreateRequest(string method)
@@ -49,7 +46,6 @@ namespace DnKR.tcLauncher.tcUpdater
 
         public string[] GetNames()
         {
-
             var list = new List<string>();
 
             var request = CreateRequest(WebRequestMethods.Ftp.ListDirectory);

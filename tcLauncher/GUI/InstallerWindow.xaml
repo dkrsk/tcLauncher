@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DnKR.tcLauncher.GUI"
         mc:Ignorable="d"
-        Title="InstallerWindow" Height="160" Width="330" Topmost="True" ResizeMode="NoResize" Initialized="Window_Initialized" WindowStyle="ToolWindow" ShowInTaskbar="False">
+        Title="InstallerWindow" Height="160" Width="330" Topmost="True" ResizeMode="NoResize" Initialized="Window_Initialized" WindowStyle="ToolWindow" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
     
     <Window.Resources>
         <ResourceDictionary>

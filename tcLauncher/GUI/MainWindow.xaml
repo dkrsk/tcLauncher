@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DnKR.tcLauncher.GUI"
         mc:Ignorable="d"
-        Title="tcLauncher" Height="480" Width="768" ResizeMode="CanMinimize" Icon="/Resources/tclauncher-ico.ico" Closing="Window_Closing" Initialized="Window_Initialized" HorizontalAlignment="Center" VerticalAlignment="Center">
+        Title="tcLauncher" Height="480" Width="768" ResizeMode="CanMinimize" Icon="/Resources/tclauncher-ico.ico" Closing="Window_Closing" Initialized="Window_Initialized" ContentRendered="Window_ContentRendered" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

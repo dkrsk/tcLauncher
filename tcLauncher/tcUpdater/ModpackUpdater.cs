@@ -17,14 +17,24 @@ namespace DnKR.tcLauncher.tcUpdater
             UpdateBuilder updater = new(config);
             string gamePath = config.path;
 
-            string[] remoteNames = await updater.GetNamesAsync();
+            string[] remoteNames;
+            try
+            {
+                remoteNames = await updater.GetNamesAsync();
+            }
+            catch (WebException)
+            {
+                stateChanged("Failed to connect\nto the server", true);
+                return;
+            }
+
             string packageName = remoteNames[^1];
             short remoteVersion = Convert.ToInt16(packageName[0..^4]);
             short currentVersion;
 
             string infoPath = Path.Combine(gamePath, "info");
 
-            stateChanged("Updating..", false);
+            stateChanged("Updating..", isChecking);
 
             try
             {

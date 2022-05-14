@@ -64,12 +64,15 @@ namespace DnKR.tcLauncher.GUI
                 this.Bkg.ImageSource = new BitmapImage(new Uri(properties.BkgPath));
             }
 
-            await UpdateModpack(true).ConfigureAwait(false);
-
             txbNick.Text = properties.Nickname;
             txbJavaPath.Text = properties.JavaPath;
             txbJavaArgs.Text = properties.JavaArgs;
             txbRam.Text = properties.Ram;
+        }
+
+        private async void Window_ContentRendered(object sender, EventArgs e)
+        {
+            await UpdateModpack(true);
 
             RefreshVersions();
         }
@@ -180,8 +183,11 @@ namespace DnKR.tcLauncher.GUI
 
         private void setUiEnabled(bool value)
         {
-            groupMain.IsEnabled = value;
-            groupSettings.IsEnabled = value;
+            Dispatcher.Invoke(() =>
+            {
+                groupMain.IsEnabled = value;
+                groupSettings.IsEnabled = value;
+            });
         }
 
         private void Process_Exited(object? sender, EventArgs e)
@@ -223,29 +229,28 @@ namespace DnKR.tcLauncher.GUI
             e.Handled = !char.IsDigit((char)e.Key) && !char.IsControl((char)e.Key);
         }
 
-        private void btnInstallVanilla_Click(object sender, RoutedEventArgs e)
+        private void OpenInstallWindow(IVersionInstaller versionInstaller)
         {
             setUiEnabled(false);
-            Window window = new InstallerWindow(new VanillaInstaller(game));
+            Window window = new InstallerWindow(versionInstaller);
+            window.Owner = this;
             window.Closing += delegate { setUiEnabled(true); RefreshVersions(); };
             window.Show();
-
         }
 
-        private async void btnInstallFabric_Click(object sender, RoutedEventArgs e)
+        private void btnInstallVanilla_Click(object sender, RoutedEventArgs e)
         {
-            setUiEnabled(false);
-            Window window = new InstallerWindow(new FabricInstaller(game));
-            window.Closing += delegate { setUiEnabled(true); RefreshVersions(); };
-            window.Show();
+            OpenInstallWindow(new VanillaInstaller(game));
+        }
+
+        private void btnInstallFabric_Click(object sender, RoutedEventArgs e)
+        {
+            OpenInstallWindow(new FabricInstaller(game));
         }
 
         private void btnInstallQuilt_Click(object sender, RoutedEventArgs e)
         {
-            setUiEnabled(false);
-            Window window = new InstallerWindow(new QuiltInstaller(game));
-            window.Closing += delegate { setUiEnabled(true); RefreshVersions(); };
-            window.Show();
+            OpenInstallWindow(new QuiltInstaller(game));
         }
 
         private void btnJavaChange_Click(object sender, RoutedEventArgs e)
@@ -298,7 +303,7 @@ namespace DnKR.tcLauncher.GUI
             }
         }
 
-        private async Task btnUpdatePack_Click(object? sender, RoutedEventArgs? e)
+        private async void btnUpdatePack_Click(object? sender, RoutedEventArgs? e)
         {
             await UpdateModpack(false);
         }
@@ -343,15 +348,11 @@ namespace DnKR.tcLauncher.GUI
         {
             Thread.CurrentThread.IsBackground = true;
 
-            UpdateStateHandler(lblUpdate.Content.ToString(), false);
+            UpdateStateHandler("Updating..", IsChecking);
 
             try
             {
                 await ModpackUpdater.UpdateModpack(updaterConfig, (msg, uis) => UpdateStateHandler(msg, uis), IsChecking);
-            }
-            catch (System.Net.WebException)
-            {
-                UpdateStateHandler("Failed to connect\nto the server");
             }
             catch (Exception e)
             {
@@ -359,14 +360,17 @@ namespace DnKR.tcLauncher.GUI
                 UpdateStateHandler("It seems something\nis broken...");
             }
 
-            UpdateStateHandler(lblUpdate.Content.ToString());
+            setUiEnabled(true);
 
         }
 
         private void UpdateStateHandler(string message, bool uiState)
         {
-            lblUpdate.Content = message;
-            setUiEnabled(uiState);
+            Dispatcher.Invoke(() =>
+            {
+                lblUpdate.Content = message;
+                setUiEnabled(uiState);
+            });
         }
 
         private void UpdateStateHandler(string message)

@@ -9,6 +9,8 @@ namespace DnKR.tcLauncher.MVersionInstaller
 {
     public interface IVersionInstaller
     {
+        string InstallerName { get; }
+
         Task<MVersionCollection> GetVersionMetadatas() { throw new NotImplementedException(); }
 
         Task InstallVersion(string version) { throw new NotImplementedException(); }
@@ -16,20 +18,17 @@ namespace DnKR.tcLauncher.MVersionInstaller
 
     public class FabricInstaller : IVersionInstaller
     {
+        public string InstallerName { get; } = "Fabric";
+
         private readonly MGame game;
         private readonly FabricVersionLoader fabricLoader;
-        private string loaderVersion = "0.14.5";
         
-        public string LoaderVersion {
-            get { return loaderVersion; }
-            set { loaderVersion = value; } }
 
         public FabricInstaller(MGame game)
         {
             this.game = game;
 
             this.fabricLoader = new FabricVersionLoader();
-            this.fabricLoader.LoaderVersion = loaderVersion;
         }
 
         public async Task<MVersionCollection> GetVersionMetadatas()
@@ -50,6 +49,8 @@ namespace DnKR.tcLauncher.MVersionInstaller
 
     public class QuiltInstaller : IVersionInstaller
     {
+        public string InstallerName { get; } = "Quilt";
+
         readonly MGame game;
         readonly QuiltVersionLoader quiltLoader;
 
@@ -78,6 +79,8 @@ namespace DnKR.tcLauncher.MVersionInstaller
 
     public class VanillaInstaller : IVersionInstaller
     {
+        public string InstallerName { get; } = "Vanilla";
+
         MGame game;
 
         public VanillaInstaller(MGame game)

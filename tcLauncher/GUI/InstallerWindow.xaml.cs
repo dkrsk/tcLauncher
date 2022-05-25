@@ -32,10 +32,11 @@ namespace DnKR.tcLauncher.GUI
 
         private async void Window_Initialized(object sender, EventArgs e)
         {
+            this.Title = $"{versionInstaller.InstallerName} version installer";
+
             cbVersions.Items.Clear();
 
             var versions = await versionInstaller.GetVersionMetadatas();
-
 
             foreach (var item in versions)
             {

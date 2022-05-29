@@ -1,4 +1,5 @@
-﻿using DnKR.tcLauncher.tcUpdater;
+﻿using System;
+using DnKR.tcLauncher.tcUpdater;
 
 namespace DnKR.tcLauncher
 {
@@ -7,10 +8,10 @@ namespace DnKR.tcLauncher
         public static UpdaterConfig GetUpdConfig()
         {
             return new UpdaterConfig(
-                    "gameDir",
-                    "server uri",
-                    "ftp path",
-                    new System.Net.NetworkCredential("user", "pass")
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.tclaucner", // game directory
+                    "ftp://127.0.0.1", // ftp server ip
+                    "mainUPD/", // modpack direcotry on the server
+                    new System.Net.NetworkCredential("user", "pass") // user and password for ftp
                 );
         }
     }
